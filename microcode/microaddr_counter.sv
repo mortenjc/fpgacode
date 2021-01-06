@@ -57,9 +57,10 @@ module microaddr_counter(
 
     endcase // cmd
 
-    if (reset == 1)
+    if (reset == 1) begin
       next_addr = 0;
       next_call_stack_ptr = 0;
+    end
   end // always_comb
 
   always_ff @(posedge clk) begin
