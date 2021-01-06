@@ -1,11 +1,15 @@
+MODULES := microaddr_counter
+TYPE_FILES := microaddr_types.sv
+
+%:%.sv $(TYPE_FILES) %_test.cpp
+	echo $(<:%.sv-%)
+	verilator -Wall -cc $(TYPE_FILES) $@ -y . -Mdir $@ --prefix $@ \
+		--exe  $(@:%=%_test.cpp) -CFLAGS "-std=c++11" \
+		-Gopjump_table_file='"opjump_table_test.data"'
+	make -C $@ -j 8 -f $@.mk
+
+all: $(MODULES)
 
 
-
-test:
-	verilator -Wall -cc microaddr.v microaddr_counter.v --prefix Microaddr \
-	--exe test.cpp -CFLAGS "-std=c++11"
-	make -C obj_dir -f Microaddr.mk
-
-
-runtest: test
-	./obj_dir/Microaddr
+clean:
+	rm -fr $(MODULES)
