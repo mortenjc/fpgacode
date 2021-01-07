@@ -1,8 +1,8 @@
 # Copyright (C) 2020 Morten Jagd Christensen, LICENSE: BSD2
 #
 
-MODULES := microaddr_counter register_file
-TYPE_FILES := microaddr_types.sv register_types.sv
+MODULES := microaddr_counter register_file alu
+TYPE_FILES := microaddr_types.sv register_types.sv alu_types.sv
 
 EXTRA_FLAGS_microaddr_counter := -Gopjump_table_file='"opjump_table_test.data"'
 
