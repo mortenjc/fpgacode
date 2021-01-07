@@ -23,7 +23,7 @@ std::vector<TestCase> tests {
   {"inc1",       0,      0,      cmd_t::INC,   1,        0},
   {"inc2",       1,      0,      cmd_t::INC,   2,        0},
   {"inc3",       0xFFFE, 0,      cmd_t::INC,   0xFFFF,   0},
-  {"inc3",       0xFFFF, 0,      cmd_t::INC,   0,        1},
+  {"inc4",       0xFFFF, 0,      cmd_t::INC,   0,        1},
   {"sub1",       0,      0,      cmd_t::SUB,   0,        1},
   {"sub2",       9,      9,      cmd_t::SUB,   0,        1},
   {"sub3",       1,      2,      cmd_t::SUB,   0xFFFF,   0},
