@@ -1,3 +1,10 @@
+// Copyright (C) 2021 Morten Jagd Christensen, see LICENSE file
+//===----------------------------------------------------------------------===//
+///
+/// \file
+/// \brief cpumemory module
+/// read and write data to/from (internal) memory
+//===----------------------------------------------------------------------===//
 
 typedef bit[10:0] addr_t /* verilator public */ ;
 typedef bit[7:0] data_t /* verilator public */ ;

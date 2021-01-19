@@ -1,3 +1,10 @@
+// Copyright (C) 2021 Morten Jagd Christensen, see LICENSE file
+//===----------------------------------------------------------------------===//
+///
+/// \file
+/// \brief ALU module
+/// Currently implements basic operations ADD, SUB, INC, DEC, AND, OR, NOT
+//===----------------------------------------------------------------------===//
 
 import alu_types::cmd_t;
 

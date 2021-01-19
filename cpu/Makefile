@@ -1,8 +1,8 @@
 # Copyright (C) 2020 Morten Jagd Christensen, LICENSE: BSD2
 #
 
-MODULES := shifter alu cpumemory
-TYPE_FILES := alu_types.sv shifter_types.sv
+MODULES := register_file shifter alu cpumemory
+TYPE_FILES := alu_types.sv shifter_types.sv register_types.sv
 
 EXTRA_FLAGS_cpumemory := -Gmemory_file='"memory_test.data"'
 

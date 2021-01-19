@@ -1,3 +1,9 @@
+// Copyright (C) 2021 Morten Jagd Christensen, see LICENSE file
+//===----------------------------------------------------------------------===//
+///
+/// \file
+/// \brief test harness for cpumemory
+//===----------------------------------------------------------------------===//
 
 #include <cpumemory.h>
 #include <verilated.h>

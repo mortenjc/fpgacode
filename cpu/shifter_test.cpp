@@ -1,3 +1,9 @@
+// Copyright (C) 2021 Morten Jagd Christensen, see LICENSE file
+//===----------------------------------------------------------------------===//
+///
+/// \file
+/// \brief test harness for shifter logic
+//===----------------------------------------------------------------------===//
 
 #include <shifter.h>
 #include <shifter_shifter_types.h>
@@ -5,7 +11,6 @@
 #include <gtest/gtest.h>
 #include <string>
 #include <vector>
-
 
 class TestCase {
 public:

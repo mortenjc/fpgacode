@@ -1,3 +1,11 @@
+// Copyright (C) 2021 Morten Jagd Christensen, see LICENSE file
+//===----------------------------------------------------------------------===//
+///
+/// \file
+/// \brief shifter module
+/// Supports left and right shift (SHL, SHR) which shifts in '0' at the ends and
+/// left and right rotate (ROR, ROL) which includes shifting into/from carry
+//===----------------------------------------------------------------------===//
 
 import shifter_types::cmd_t;
 

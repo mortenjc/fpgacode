@@ -1,3 +1,9 @@
+// Copyright (C) 2021 Morten Jagd Christensen, see LICENSE file
+//===----------------------------------------------------------------------===//
+///
+/// \file
+/// \brief test harness for ALU logic
+//===----------------------------------------------------------------------===//
 
 #include <alu.h>
 #include <alu_alu_types.h>
