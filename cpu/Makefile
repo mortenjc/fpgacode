@@ -9,7 +9,7 @@ EXTRA_FLAGS_cpumemory := -Gmemory_file='"memory_test.data"'
 %:%.sv $(TYPE_FILES) %_test.cpp
 	verilator -Wall -cc $(TYPE_FILES) $@ -y . -Mdir $@ --prefix $@ \
 		--exe  $(@:%=%_test.cpp) \
-		-LDFLAGS "-L../googletest/build/lib -lgtest" \
+		-LDFLAGS "-L../googletest/build/lib -lgtest -lpthread" \
 		-CFLAGS "-std=c++11" \
 		-CFLAGS "-I../googletest/googletest/include/" $($(@:%=EXTRA_FLAGS_%))
 		make -C $@ -j 8 -f $@.mk
