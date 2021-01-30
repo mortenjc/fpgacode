@@ -11,13 +11,16 @@
 
 module top(
    input clk,
-	input reset,
+	input btn0,
+	input btn1,
+	input bit[9:0] sw,
 	output bit[7:0] hex0,
 	output bit[7:0] hex1,
 	output bit[7:0] hex2,
 	output bit[7:0] hex3,
 	output bit[7:0] hex4,
-	output bit[7:0] hex5
+	output bit[7:0] hex5,
+	output bit[9:0] leds
 	);
 	
 
@@ -27,7 +30,9 @@ module top(
    clockdivider clockdiv_i(
 		.clk_in(clk), 
 		.s(s_clk_i), 
-		.hs(hs_clk_i));
+		.hs(hs_clk_i),
+		.ctr(leds)
+		);
 
 		
 	wire [5:0] sec_i;
@@ -37,12 +42,15 @@ module top(
 	clock clock_i(
 		.s_clk(s_clk_i),
 		.hs_clk(hs_clk_i),
-		.reset(~reset), 
-		.enable(1), 
+		.reset_h(~btn0),
+		.reset_m(~btn1),
+		.enable(1),
+      .set(sw[5:0]),
 		.sec(sec_i), 
 		.min(min_i), 
 		.hour(hour_i),
-		.dot(dot_i));
+		.dot(dot_i)
+		);
 	
 	
 	ledctrl ledctrl_i(
@@ -55,6 +63,7 @@ module top(
 		.led2(hex2), 
 		.led3(hex3), 
 		.led4(hex4), 
-		.led5(hex5));
+		.led5(hex5)
+		);
   
 endmodule

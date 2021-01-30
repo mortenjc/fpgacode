@@ -8,7 +8,8 @@
 module clockdivider(
 	input bit clk_in,
 	output bit s,      // seconds
-	output bit hs);    // half seconds
+	output bit hs,     // half seconds
+	output bit [9:0] ctr);    
 
 	bit [31:0] s_max = 50000000;
 	bit [31:0] cnt_s;
@@ -44,6 +45,7 @@ module clockdivider(
 	 
     s <= new_s;
 	 hs <= new_hs;
+	 ctr <= cnt_s[25:16];
   end
 	
 endmodule

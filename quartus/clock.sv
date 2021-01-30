@@ -9,8 +9,11 @@
 module clock(
   input bit s_clk,
   input bit hs_clk,
-  input bit reset,
+  input bit reset_h,
+  input bit reset_m,
   input bit enable,
+  input bit [5:0] set, // from switch 5 - 0
+
   output bit [4:0] hour,
   output bit [5:0] min,
   output bit [5:0] sec,
@@ -30,9 +33,11 @@ module clock(
    
 	always_ff @(posedge s_clk) begin
 		if (enable) begin
-			if (reset) begin
-				new_hour = 0;
-				new_min = 0;
+			if (reset_h | reset_m) begin
+				if (reset_h)
+					new_hour = set[4:0];
+				else
+				   new_min = set[5:0];
 				new_sec = 0;
 			end // reset
 			else begin
