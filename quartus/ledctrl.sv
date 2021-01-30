@@ -1,10 +1,16 @@
-
+// Copyright (C) 2021 Morten Jagd Christensen, see LICENSE file
+//===----------------------------------------------------------------------===//
+///
+/// \file
+/// \brief 7 segment LED display for DE10-lite which has 6 7-segment LEDs
+//===----------------------------------------------------------------------===//
 
 module ledctrl(
 	input bit [4:0] h,
 	input bit [5:0] m,
 	input bit [5:0] s,
 	input bit dot, // half second
+
 	output bit[7:0] led0,
 	output bit[7:0] led1,
 	output bit[7:0] led2,

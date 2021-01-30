@@ -1,3 +1,4 @@
 obj_dir/
 googletest/
 *.bak
+*.qws

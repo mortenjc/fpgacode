@@ -1,3 +1,11 @@
+// Copyright (C) 2021 Morten Jagd Christensen, see LICENSE file
+//===----------------------------------------------------------------------===//
+///
+/// \file
+/// \brief wall clock time generator with half second indicator
+/// uses a second-clock and halfsecond-clock
+//===----------------------------------------------------------------------===//
+
 module clock(
   input bit s_clk,
   input bit hs_clk,

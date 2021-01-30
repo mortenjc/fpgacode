@@ -1,4 +1,9 @@
-
+// Copyright (C) 2021 Morten Jagd Christensen, see LICENSE file
+//===----------------------------------------------------------------------===//
+///
+/// \file
+/// \brief a 50MHz to 1Hz and 2Hz clock divider
+//===----------------------------------------------------------------------===//
 
 module clockdivider(
 	input bit clk_in,

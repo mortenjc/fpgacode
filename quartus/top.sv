@@ -1,4 +1,13 @@
-
+// Copyright (C) 2021 Morten Jagd Christensen, see LICENSE file
+//===----------------------------------------------------------------------===//
+///
+/// \file
+/// \brief Implementing a clock (eventually) based on DE10-lite FPGA demo board
+/// The system consists of
+///   * a clock divider generating a half-second and a second clock
+///   * clock module generating hour, minute and second values
+///   * 7-segment led display module
+//===----------------------------------------------------------------------===//
 
 module top(
    input clk,
