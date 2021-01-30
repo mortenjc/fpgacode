@@ -2,28 +2,43 @@
 
 module clockdivider(
 	input bit clk_in,
-	output bit sec_pulse);
+	output bit s,      // seconds
+	output bit hs);    // half seconds
 
-	bit [31:0] max_counter = 50000000;
-	bit [31:0] counter;
-	bit new_sec_pulse;
+	bit [31:0] s_max = 50000000;
+	bit [31:0] cnt_s;
+	bit new_s;
+	
+	bit [31:0] hs_max = 25000000;
+	bit [31:0] cnt_hs;
+	bit new_hs;
 	
   
-  initial begin
-    counter = 0;
-	 new_sec_pulse = 0;
+  initial begin // not synthesizable - for unit test
+    s = 0;
+	 hs = 0;
   end
   
   always_ff @(posedge clk_in) begin
-    counter = counter + 1;
-	 if (counter == max_counter) begin
-	   counter = 0;
-		new_sec_pulse = 1;
+    cnt_s = cnt_s + 1;
+	 cnt_hs = cnt_hs + 1;
+	 
+	 if (cnt_s == s_max) begin
+	   cnt_s = 0;
+		new_s = 1;
 	 end
 	 else
-	   new_sec_pulse = 0;
+	   new_s = 0;
+		
+	 if (cnt_hs == hs_max) begin
+	   cnt_hs = 0;
+		new_hs = 1;
+	 end
+	 else
+	   new_hs = 0;
 	 
-    sec_pulse <= new_sec_pulse;
+    s <= new_s;
+	 hs <= new_hs;
   end
 	
 endmodule
