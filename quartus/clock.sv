@@ -6,13 +6,12 @@
 /// uses a second-clock and halfsecond-clock
 //===----------------------------------------------------------------------===//
 
-module clock(
+module clock2(
   input bit s_clk,
   input bit hs_clk,
   input bit reset_h,
   input bit reset_m,
-  input bit enable,
-  input bit [5:0] set, // from switch 5 - 0
+  input bit [5:0] value, // from switch 5 - 0
 
   output bit [4:0] hour,
   output bit [5:0] min,
@@ -20,52 +19,41 @@ module clock(
   output bit dot
   );
   
-  bit [4:0] new_hour;
-  bit [5:0] new_min;
-  bit [5:0] new_sec;
- 
-  bit [16:0] hoursec;
-  bit [11:0] minsec;
+  
   
    always_ff @(posedge hs_clk) begin
 	   dot <= ~dot;
 	end
    
+	
 	always_ff @(posedge s_clk) begin
-		if (enable) begin
-			if (reset_h | reset_m) begin
-				if (reset_h)
-					new_hour = set[4:0];
-				else
-				   new_min = set[5:0];
-				new_sec = 0;
-			end // reset
-			else begin
-				new_sec++;
-				minsec++;
-				hoursec++;
-				if (new_sec == 60) begin
-					new_sec = 0;
-					new_min++;
+		if (reset_h | reset_m) begin
+			if (reset_h)
+				hour <= value[4:0];
+			else
+				min <= value[5:0];
+			sec <= 0;
+		   end 
+		else begin // not reset - normal clock
+		
+			if (sec == 59) begin // second overflow check
+				sec <= 0;
+				if (min == 59) begin // minute overflow check
+					min <= 0;
+					if (hour == 23) begin // hour overflow check
+						hour <= 0;
+					end else begin
+					   hour = hour + 1;
+					end // houroverflow check
+				end else begin
+					min <= min + 1;
 				end
-		  
-				if (minsec == 3600) begin
-					minsec = 0;
-					new_min = 0;
-					new_hour++;
-				end
-				
-		 	   if (hoursec == 3600*24) begin
-					hoursec = 0;
-					new_hour = 0;
-				end
+			end else begin 
+				sec <= sec + 1;
+			end // sec overflow check
+		
+		end // not reset - normal clock
 			
-			end // not reset
-				
-			hour <= new_hour;
-			min <= new_min;
-			sec <= new_sec;
-		end // enable
 	end
   
  endmodule
