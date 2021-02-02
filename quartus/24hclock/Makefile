@@ -13,10 +13,10 @@ clock_24h: src/clock_24h.sv
 	make -C clock_24h -j 8 -f $@.mk
 
 
-all: $(MODULES)
+all: clock_24h
 
 
-runtest: $(MODULES)
+runtest: clock_24h
 	for test in $(MODULES); do ./$$test/$$test || exit 1; done
 
 gtest:

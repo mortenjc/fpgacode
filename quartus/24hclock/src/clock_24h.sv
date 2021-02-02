@@ -18,24 +18,22 @@ module clock_24h(
   output bit [5:0] sec,
   output bit dot
   );
-  
-  
-  
+
+
+
    always_ff @(posedge hs_clk) begin
 	   dot <= ~dot;
 	end
-   
-	
+
+
 	always_ff @(posedge s_clk) begin
 		if (reset_h | reset_m) begin
 			if (reset_h)
-				hour <= value[4:0];
+				hour <= value[4:0] % 5'b11000;
 			else
-				min <= value[5:0];
+				min <= value[5:0] % 6'b111100;
 			sec <= 0;
-		   end 
-		else begin // not reset - normal clock
-		
+		end else begin // not reset - normal clock
 			if (sec == 59) begin // second overflow check
 				sec <= 0;
 				if (min == 59) begin // minute overflow check
@@ -48,12 +46,11 @@ module clock_24h(
 				end else begin
 					min <= min + 1'b1;
 				end
-			end else begin 
+			end else begin
 				sec <= sec + 1'b1;
 			end // sec overflow check
-		
 		end // not reset - normal clock
-			
-	end
-  
+
+	end // posedge _clk
+
  endmodule
