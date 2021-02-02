@@ -6,7 +6,7 @@
 /// uses a second-clock and halfsecond-clock
 //===----------------------------------------------------------------------===//
 
-module clock(
+module clock_24h(
   input bit s_clk,
   input bit hs_clk,
   input bit reset_h,
@@ -43,7 +43,7 @@ module clock(
 					if (hour == 23) begin // hour overflow check
 						hour <= 0;
 					end else begin
-					   hour = hour + 1'b1;
+					   hour <= hour + 1'b1;
 					end // houroverflow check
 				end else begin
 					min <= min + 1'b1;

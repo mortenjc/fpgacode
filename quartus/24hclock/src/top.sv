@@ -39,7 +39,7 @@ module top(
 	wire [5:0] min_i;
 	wire [4:0] hour_i;
 	wire dot_i;
-	clock clock_i(
+	clock_24h clock_24h_i(
 		.s_clk(s_clk_i),
 		.hs_clk(hs_clk_i),
 		.reset_h(~btn0),
