@@ -1,30 +1,50 @@
-# Copyright (C) 2020 Morten Jagd Christensen, LICENSE: BSD2
+# Copyright (C) 2021 Morten Jagd Christensen, LICENSE: BSD2
 #
 
-MODULES := clock_24h
+define my_test
+build/$(1)/$(1): build/$(1)
+	make -C build/$(1) -j 8 -f $(1).mk
+endef
 
+MODULES = clock_24h
 
-clock_24h: src/clock_24h.sv
-	verilator -Wall -cc src/clock_24h.sv -y . -Mdir clock_24h --prefix clock_24h \
-            --exe src/clock_24h_test.cpp \
-            -LDFLAGS "-L../googletest/build/lib -lgtest -lpthread" \
+$(foreach mymod, $(MODULES), $(eval $(call my_test,$(mymod))))
+
+TARGETS = $(join $(addsuffix /, $(addprefix build/, $(MODULES))), $(MODULES))
+
+# build/clock_24h/clock_24h: build/clock_24h
+# 	make -C $< -j 8 -f $(notdir $<).mk
+
+build/%: src/%.sv
+	verilator -Wall -cc $< -y . -Mdir $@ --prefix $(notdir $@) \
+            --exe ../../src/$(notdir $@)_test.cpp \
+            -LDFLAGS "-L../../googletest/build/lib -lgtest -lpthread" \
             -CFLAGS "-std=c++11" \
-            -CFLAGS "-I../googletest/googletest/include/" $($(@:%=EXTRA_FLAGS_%))
-	make -C clock_24h -j 8 -f $@.mk
+            -CFLAGS "-I../../googletest/googletest/include/"
 
 
-all: clock_24h
 
+all: directories $(TARGETS)
+	echo "done"
 
-runtest: clock_24h
-	for test in $(MODULES); do ./$$test/$$test || exit 1; done
+runtest: $(TARGETS)
+	for test in $(TARGETS); do ./$$test || exit 1; done
 
 gtest:
 	./scripts/makegtest
 
 
+# make sure build directory i built
+.PHONY: directories
+
+directories: build
+
+build:
+	mkdir -p build
+
+# Misc clean targets
 clean:
-	rm -fr $(MODULES) *.bak
+	rm -fr build *.bak
 
 realclean: clean
 	rm -fr googletest db output_files simulation
