@@ -3,29 +3,26 @@
 
 define my_test
 build/$(1)/$(1): build/$(1)
-	make -C build/$(1) -j 8 -f $(1).mk
+	@make -C build/$(1) -j 8 -f $(1).mk
 endef
 
 MODULES = clock_24h
 
+# Generate rules to make the test executable
 $(foreach mymod, $(MODULES), $(eval $(call my_test,$(mymod))))
 
 TARGETS = $(join $(addsuffix /, $(addprefix build/, $(MODULES))), $(MODULES))
 
-# build/clock_24h/clock_24h: build/clock_24h
-# 	make -C $< -j 8 -f $(notdir $<).mk
-
 build/%: src/%.sv
-	verilator -Wall -cc $< -y . -Mdir $@ --prefix $(notdir $@) \
+	@verilator -Wall -cc $< -y . -Mdir $@ --prefix $(notdir $@) \
             --exe ../../src/$(notdir $@)_test.cpp \
             -LDFLAGS "-L../../googletest/build/lib -lgtest -lpthread" \
             -CFLAGS "-std=c++11" \
             -CFLAGS "-I../../googletest/googletest/include/"
 
 
-
 all: directories $(TARGETS)
-	echo "done"
+	@echo "done"
 
 runtest: $(TARGETS)
 	for test in $(TARGETS); do ./$$test || exit 1; done
@@ -40,11 +37,11 @@ gtest:
 directories: build
 
 build:
-	mkdir -p build
+	@mkdir -p build
 
 # Misc clean targets
 clean:
-	rm -fr build *.bak
+	@rm -fr build *.bak
 
 realclean: clean
-	rm -fr googletest db output_files simulation
+	@rm -fr googletest db output_files simulation
