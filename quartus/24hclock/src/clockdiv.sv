@@ -11,11 +11,11 @@ module clockdivider(
 	output bit hs,     // half seconds
 	output bit [9:0] ctr);    
 
-	bit [31:0] s_max = 50000000;
+	bit [31:0] s_max = 50000000 - 1;
 	bit [31:0] cnt_s;
 	bit new_s;
 	
-	bit [31:0] hs_max = 25000000;
+	bit [31:0] hs_max = 25000000 - 1;
 	bit [31:0] cnt_hs;
 	bit new_hs;
 	
