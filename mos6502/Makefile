@@ -1,6 +1,8 @@
 # Copyright (C) 2021 Morten Jagd Christensen, LICENSE: BSD2
 #
 
+.DEFAULT_GOAL:= all
+
 define my_test
 build/$(1)/$(1): build/$(1)
 	@make -C build/$(1) -j 8 -f $(1).mk
@@ -10,10 +12,14 @@ MODULES = cpumemory
 
 EXTRA_FLAGS_cpumemory := -Gmemory_file='"src/memory_test.data"'
 
+
 # Generate rules to make the test executable
 $(foreach mymod, $(MODULES), $(eval $(call my_test,$(mymod))))
 
 TARGETS = $(join $(addsuffix /, $(addprefix build/, $(MODULES))), $(MODULES))
+
+all: directories $(TARGETS)
+	@echo "done"
 
 build/%: src/%.sv
 	@verilator -Wall -cc $< -y . -Mdir $@ --prefix $(notdir $@) \
@@ -22,10 +28,6 @@ build/%: src/%.sv
             -CFLAGS "-std=c++11" \
             -CFLAGS "-I../../googletest/googletest/include/" $(EXTRA_FLAGS_cpumemory)
 
-
-all: directories $(TARGETS)
-	@echo "done"
-
 runtest: $(TARGETS)
 	for test in $(TARGETS); do ./$$test || exit 1; done
 
@@ -33,7 +35,7 @@ gtest:
 	./scripts/makegtest
 
 
-# make sure build directory i built
+# make sure build directory is built
 .PHONY: directories
 
 directories: build
