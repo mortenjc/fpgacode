@@ -1,0 +1,2 @@
+quartus_map --read_settings_files=on --write_settings_files=off mjc1 -c top
+
