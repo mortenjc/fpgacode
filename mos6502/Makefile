@@ -8,7 +8,9 @@ build/$(1)/$(1): build/$(1)
 	@make -C build/$(1) -j 8 -f $(1).mk
 endef
 
-MODULES = cpumemory
+
+MODULES = cpumemory instreg memmux control
+COMMONMOD = src/common_types.sv
 
 EXTRA_FLAGS_cpumemory := -Gmemory_file='"src/memory_test.data"'
 
@@ -21,12 +23,12 @@ TARGETS = $(join $(addsuffix /, $(addprefix build/, $(MODULES))), $(MODULES))
 all: directories $(TARGETS)
 	@echo "done"
 
-build/%: src/%.sv
-	@verilator -Wall -cc $< -y . -Mdir $@ --prefix $(notdir $@) \
+build/%: src/%.sv $(COMMONMOD)
+	@verilator -Wall -cc $(COMMONMOD) $<  -y . -Mdir $@ --prefix $(notdir $@) \
             --exe ../../src/$(notdir $@)_test.cpp \
             -LDFLAGS "-L../../googletest/build/lib -lgtest -lpthread" \
             -CFLAGS "-std=c++11" \
-            -CFLAGS "-I../../googletest/googletest/include/" $(EXTRA_FLAGS_cpumemory)
+            -CFLAGS "-I../../googletest/googletest/include/" $(EXTRA_FLAGS_$(notdir $@))
 
 runtest: $(TARGETS)
 	for test in $(TARGETS); do ./$$test || exit 1; done

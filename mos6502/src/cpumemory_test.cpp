@@ -6,6 +6,7 @@
 //===----------------------------------------------------------------------===//
 
 #include <cpumemory.h>
+#include <cpumemory_common_types.h>
 #include <verilated.h>
 #include <gtest/gtest.h>
 #include <string>
@@ -16,19 +17,19 @@ public:
   std::string name;
   uint16_t addr;
   uint8_t data_in;
-  uint8_t data_out;
   uint8_t mw;
   uint8_t expected_data;
 };
 
+using mem = cpumemory_common_types::mw_t;
 std::vector<TestCase> tests {
-  {"read1", 0x000, 0x00, 1, 0xFF},
-  {"read2", 0x001, 0x00, 1, 0xAA},
-  {"read3", 0x002, 0x00, 1, 0x02},
-  {"read4", 0x003, 0x00, 1, 0x03},
-  {"read5", 0x3FF, 0x00, 1, 0x00},
-  {"write1", 0x3FF, 0xAA, 0, 0xAA},
-  {"rdbck1", 0x3FF, 0x00, 1, 0xAA},
+  {"read1",  0x000, 0x00, mem::READ,  0xFF},
+  {"read2",  0x001, 0x00, mem::READ,  0xAA},
+  {"read3",  0x002, 0x00, mem::READ,  0x02},
+  {"read4",  0x003, 0x00, mem::READ,  0x03},
+  {"read5",  0x3FF, 0x00, mem::READ,  0x00},
+  {"write1", 0x3FF, 0xAA, mem::WRITE, 0x00},
+  {"rdbck1", 0x3FF, 0x00, mem::READ,  0xAA},
 };
 
 class MEMTest: public ::testing::Test {

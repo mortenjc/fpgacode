@@ -6,12 +6,13 @@
 /// read and write data to/from (internal) memory
 //===----------------------------------------------------------------------===//
 
-typedef bit[15:0] addr_t /* verilator public */ ;
-typedef bit[7:0] data_t /* verilator public */ ;
+import common_types::addr_t;
+import common_types::data_t;
+import common_types::mw_t;
 
 module cpumemory(
   input bit clk,
-  input bit mw,
+  input mw_t mw,
   input addr_t addr,
   input data_t data_in,
   output data_t data_out
@@ -26,7 +27,7 @@ module cpumemory(
   end
 
   always_ff @(posedge clk) begin
-    if (mw == 1) // write to mem
+    if (mw == common_types::WRITE)
       memory_table[addr] <= data_in;
     else begin // read from mem
       data_out <= memory_table[addr];
