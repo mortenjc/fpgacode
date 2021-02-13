@@ -14,11 +14,13 @@ import common_types::mw_t;
 
 module top(
     input clk,
-    output wire [7:0] led5
+    output wire [7:0] led5,
+	 output wire [7:0] led4,
+	 output wire [7:0] led3
   );
 
   addr_t pcaddr_i = 16'b0;
-  addr_t aaddr_i = 40000;
+  addr_t aaddr_i = 16'h0002;
   mw_t mw_i;
   mm_t mm_i;
   data_t mdatao_i;
@@ -36,38 +38,38 @@ module top(
     );
 
 
-<<<<<<< HEAD
-  data_t mmdatao_i;
-  logic [15:0] maddro_i;
-=======
-  addr_t mmaddro_i;
->>>>>>> 7478166401e720fccbc1401147a57d6f10ba76fa
+
+  addr_t maddro_i;
   memmux memmux_i(
     .mm(mm_i),
     .pc_in(pcaddr_i),
     .addr_in(aaddr_i),
-<<<<<<< HEAD
     .addr_out(maddro_i)
-    );
-
-=======
-    .addr_out(mmaddro_i)
     );
 
 
   data_t mdatai_i = 0;
->>>>>>> 7478166401e720fccbc1401147a57d6f10ba76fa
   cpumemory cpumemory_i(
     .clk(clk),
     .mw(mw_i),
-    .addr(mmaddro_i),
+    .addr(maddro_i),
     .data_in(mdatai_i),
     .data_out(mdatao_i)
     );
 	 
-  ledctrl ledctrl_i (
+  ledctrl led5_i (
     .value(stateo_i),
 	 .led(led5)
+	 );
+	 
+  ledctrl led4_i (
+    .value(mdatao_i[7:4]),
+	 .led(led4)
+	 );
+	 
+  ledctrl led3_i (
+    .value(mdatao_i[3:0]),
+	 .led(led3)
 	 );
 
 endmodule
