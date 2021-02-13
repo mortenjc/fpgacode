@@ -6,6 +6,7 @@
 //===----------------------------------------------------------------------===//
 
 import common_types::state_t;
+import common_types::addr_t;
 import common_types::data_t;
 import common_types::il_t;
 import common_types::mm_t;
@@ -17,27 +18,25 @@ module top(
     output wire [7:0] led
   );
 
-  logic [15:0] pcaddr_i = 4'h0000;
-  logic [15:0] aaddr_i = 4'haaaa;
-  logic mw_i;
-  logic mm_i;
-  logic il_i;
-  logic [7:0]] mdatao_i;
+  addr_t pcaddr_i = 4'h0000;
+  addr_t aaddr_i = 4'haaaa;
+  mw_t mw_i;
+  mm_t mm_i;
+  data_t mdatao_i;
 
-  logic state_i;
+  state_t statei_i;
+  state_t stateo_i;
   logic il_i;
   control control_i(
     .clk(clk),
-    .state(state_i),
     .inst(mdatao_i),
-    .next_state(state_i),
     .il(il_i),
     .mw(mw_i),
     .mm(mm_i)
     );
 
 
-  logic [7:0]] mmdatao_i;
+  data_t mmdatao_i;
   memmux memmux_i(
     .mm(mm_i),
     .pc_in(pcaddr_i),

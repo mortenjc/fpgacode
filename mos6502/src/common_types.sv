@@ -28,9 +28,9 @@ typedef enum logic {
   INF, EX0
 } state_t /* verilator public */ ;
 
-typedef bit[15:0] addr_t /* verilator public */ ;
-typedef bit[7:0] data_t /* verilator public */ ;
-typedef bit[7:0] opc_t /* verilator public */ ;
+typedef logic[15:0] addr_t /* verilator public */ ;
+typedef logic[7:0] data_t /* verilator public */ ;
+typedef logic[7:0] opc_t /* verilator public */ ;
 
 
 endpackage : common_types

@@ -11,7 +11,7 @@ import common_types::mm_t;
 module memmux(
     input mm_t mm,
     input addr_t pc_in,
-    inout addr_t addr_in,
+    input addr_t addr_in,
     output addr_t addr_out
   );
 

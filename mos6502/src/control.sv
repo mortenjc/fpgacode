@@ -15,15 +15,14 @@ import common_types::mw_t;
 
 module control(
     input clk,
-    input state_t state,
     input data_t inst,
-    output state_t next_state,
     output il_t il,
     output mw_t mw,
     output mm_t mm
   );
 
 
+state_t state;
 state_t new_next_state;
 
 always_comb begin
@@ -54,7 +53,7 @@ end
 
 
   always_ff @(posedge clk) begin
-    next_state <= new_next_state;
+    state <= new_next_state;
   end
 /* verilator lint_on UNUSED */
 endmodule

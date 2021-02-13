@@ -18,8 +18,8 @@ module cpumemory(
   output data_t data_out
   );
 
-  parameter memory_file="";
-  data_t memory_table[65536];
+  parameter memory_file="memory_test.data";
+  data_t memory_table[2048];
 
   initial begin
     $display("Loading rom.");
