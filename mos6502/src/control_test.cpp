@@ -28,8 +28,8 @@ using mm = control_common_types::mm_t;
 using mw = control_common_types::mw_t;
 using il = control_common_types::il_t;
 std::vector<TestCase> tests {
-  {"inf", state::INF, 0x00, state::EX0, mm:PC_},
-  {"ex0", state::EX0, 0x00, state::INF},
+  {"inf", state::INF, 0x00, state::EX0, mm::PC_ADDR, il::LOAD, mw::READ},
+  {"ex0", state::EX0, 0x00, state::INF, mm::PC_ADDR, il::NOLOAD, mw::READ},
 };
 
 class ControlTest: public ::testing::Test {

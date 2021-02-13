@@ -18,8 +18,8 @@ module top(
     output wire [7:0] led
   );
 
-  addr_t pcaddr_i = 4'h0000;
-  addr_t aaddr_i = 4'haaaa;
+  addr_t pcaddr_i = 16'b0;
+  addr_t aaddr_i = 40000;
   mw_t mw_i;
   mm_t mm_i;
   data_t mdatao_i;
@@ -37,15 +37,13 @@ module top(
 
 
   data_t mmdatao_i;
+  logic [15:0] maddro_i;
   memmux memmux_i(
     .mm(mm_i),
     .pc_in(pcaddr_i),
     .addr_in(aaddr_i),
-    .addr_out(mmdatao_i)
+    .addr_out(maddro_i)
     );
-
-
-  logic [15:0] maddro_i;
 
   cpumemory cpumemory_i(
     .clk(clk),

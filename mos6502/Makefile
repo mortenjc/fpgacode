@@ -20,8 +20,11 @@ $(foreach mymod, $(MODULES), $(eval $(call my_test,$(mymod))))
 
 TARGETS = $(join $(addsuffix /, $(addprefix build/, $(MODULES))), $(MODULES))
 
-all: directories $(TARGETS)
+all: directories $(TARGETS) build/top/top
 	@echo "done"
+
+build/top/top: build/top
+	@make -C build/top -j 8 -f top.mk
 
 build/%: src/%.sv $(COMMONMOD)
 	@verilator -Wall -cc $(COMMONMOD) $<  -y . -Mdir $@ --prefix $(notdir $@) \
@@ -30,8 +33,18 @@ build/%: src/%.sv $(COMMONMOD)
             -CFLAGS "-std=c++11" \
             -CFLAGS "-I../../googletest/googletest/include/" $(EXTRA_FLAGS_$(notdir $@))
 
-runtest: $(TARGETS)
-	for test in $(TARGETS); do ./$$test || exit 1; done
+RUNTARGETS = $(TARGETS) build/top/top
+
+runtest: $(RUNTARGETS)
+	for test in $(RUNTARGETS); do ./$$test || exit 1; done
+
+build/top: src/common_types.sv src/control.sv src/memmux.sv src/top.sv
+	mkdir -p build
+	@verilator -Wall -cc $^  -y . -Mdir build/top --prefix top \
+            --exe ../../src/top_test.cpp \
+            -LDFLAGS "-L../../googletest/build/lib -lgtest -lpthread" \
+            -CFLAGS "-std=c++11" \
+            -CFLAGS "-I../../googletest/googletest/include/" $(EXTRA_FLAGS_$(notdir $@))
 
 gtest:
 	./scripts/makegtest
