@@ -15,10 +15,21 @@
 class TestCase {
 public:
   std::string name;
-  uint16_t expected_data;
+  uint8_t state;
+  uint8_t data;
+  uint16_t expected_state;
+  uint16_t expected_mm;
+  uint16_t expected_il;
+  uint16_t expected_mw;
 };
 
+using state = control_common_types::state_t;
+using mm = control_common_types::mm_t;
+using mw = control_common_types::mw_t;
+using il = control_common_types::il_t;
 std::vector<TestCase> tests {
+  {"inf", state::INF, 0x00, state::EX0, mm:PC_},
+  {"ex0", state::EX0, 0x00, state::INF},
 };
 
 class ControlTest: public ::testing::Test {
