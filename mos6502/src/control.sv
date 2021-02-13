@@ -16,6 +16,7 @@ import common_types::mw_t;
 module control(
     input clk,
     input data_t inst,
+	 output state_t stateo,
     output il_t il,
     output mw_t mw,
     output mm_t mm
@@ -54,6 +55,7 @@ end
 
   always_ff @(posedge clk) begin
     state <= new_next_state;
+	 stateo <= new_next_state;
   end
 /* verilator lint_on UNUSED */
 endmodule
