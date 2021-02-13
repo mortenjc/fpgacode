@@ -6,8 +6,8 @@
 //===----------------------------------------------------------------------===//
 
 module ledctrl(
-  input bit[3:0] value
-	output bit[7:0] led,
+   input bit[3:0] value,
+	output bit[7:0] led
 	);
 
 	bit [6:0] led_dig_0 = 'b1000000;
@@ -31,15 +31,15 @@ module ledctrl(
 	bit nodot = 1'b1;
 
 	always_comb begin
-		unique case (s)
+		unique case (value)
 			0  : led = {nodot, led_dig_0};
-	    1  : led = {nodot, led_dig_1};
+			1  : led = {nodot, led_dig_1};
 			2  : led = {nodot, led_dig_2};
-	    3  : led = {nodot, led_dig_3};
+			3  : led = {nodot, led_dig_3};
 			4  : led = {nodot, led_dig_4};
-	    5  : led = {nodot, led_dig_5};
+			5  : led = {nodot, led_dig_5};
 			6  : led = {nodot, led_dig_6};
-	    7  : led = {nodot, led_dig_7};
+			7  : led = {nodot, led_dig_7};
 			8  : led = {nodot, led_dig_8};
 			9  : led = {nodot, led_dig_9};
 			10 : led = {nodot, led_dig_A};
@@ -49,7 +49,7 @@ module ledctrl(
 			14 : led = {nodot, led_dig_E};
 			15 : led = {nodot, led_dig_F};
 	   default:
-	      led0 = led_off;
+	      led = led_off;
 	   endcase
 	end
 
