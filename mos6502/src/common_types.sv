@@ -28,6 +28,11 @@ typedef enum logic {
   INF, EX0
 } state_t /* verilator public */ ;
 
+// Control states for the program counter
+typedef enum logic[1:0] {
+  HOLD, INC, REL, ABS
+} ps_t /* verilator public */ ;
+
 typedef logic[15:0] addr_t /* verilator public */ ;
 typedef logic[7:0] data_t /* verilator public */ ;
 typedef logic[7:0] opc_t /* verilator public */ ;

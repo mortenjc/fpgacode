@@ -23,8 +23,16 @@ module top(
   addr_t aaddr_i = 16'h0002;
   mw_t mw_i;
   mm_t mm_i;
+  ps_t ps_i;
   data_t mdatao_i;
- 
+
+  pcounter pcounter_i(
+    .clk(clk),
+    .ps(ps_i),
+    .pc_in(aaddr_i),
+    .pc_out(pcaddr_i)
+    );
+
 
   state_t stateo_i;
   logic il_i;
@@ -34,7 +42,8 @@ module top(
     .inst(mdatao_i),
     .il(il_i),
     .mw(mw_i),
-    .mm(mm_i)
+    .mm(mm_i),
+    .ps(ps_i)
     );
 
 
@@ -56,17 +65,17 @@ module top(
     .data_in(mdatai_i),
     .data_out(mdatao_i)
     );
-	 
+
   ledctrl led5_i (
     .value(stateo_i),
 	 .led(led5)
 	 );
-	 
+
   ledctrl led4_i (
     .value(mdatao_i[7:4]),
 	 .led(led4)
 	 );
-	 
+
   ledctrl led3_i (
     .value(mdatao_i[3:0]),
 	 .led(led3)

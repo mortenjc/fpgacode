@@ -9,7 +9,7 @@ build/$(1)/$(1): build/$(1)
 endef
 
 
-MODULES = cpumemory instreg memmux control
+MODULES = cpumemory instreg memmux control pcounter
 COMMONMOD = src/common_types.sv
 
 EXTRA_FLAGS_cpumemory := -Gmemory_file='"src/memory_test.data"'
@@ -20,7 +20,7 @@ $(foreach mymod, $(MODULES), $(eval $(call my_test,$(mymod))))
 
 TARGETS = $(join $(addsuffix /, $(addprefix build/, $(MODULES))), $(MODULES))
 
-all: directories $(TARGETS) build/top/top
+all: directories $(TARGETS) #build/top/top
 	@echo "done"
 
 build/top/top: build/top
