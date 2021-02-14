@@ -20,7 +20,7 @@ module cpumemory(
   output data_t data_out
   );
 
-  parameter memory_file="memory_test.data";
+  parameter memory_file="cpumemory_test.data";
   data_t memory_table[2048];
 
   initial begin

@@ -9,10 +9,11 @@ build/$(1)/$(1): build/$(1)
 endef
 
 
-MODULES = cpumemory instreg memmux control pcounter
+MODULES = cpumemory instreg memmux control pcounter alu
+#MODULES = alu
 COMMONMOD = src/common_types.sv
 
-EXTRA_FLAGS_cpumemory := -Gmemory_file='"src/memory_test.data"'
+EXTRA_FLAGS_cpumemory := -Gmemory_file='"src/cpumemory_test.data"'
 
 
 # Generate rules to make the test executable
@@ -33,7 +34,7 @@ build/%: src/%.sv $(COMMONMOD)
             -CFLAGS "-std=c++11" \
             -CFLAGS "-I../../googletest/googletest/include/" $(EXTRA_FLAGS_$(notdir $@))
 
-RUNTARGETS = $(TARGETS) build/top/top
+RUNTARGETS = $(TARGETS) #build/top/top
 
 runtest: $(RUNTARGETS)
 	for test in $(RUNTARGETS); do ./$$test || exit 1; done

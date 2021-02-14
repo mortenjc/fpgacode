@@ -9,11 +9,11 @@ import common_types::addr_t;
 import common_types::ps_t;
 
 module pcounter(
-    input bit clk,
-	 input bit rst,
-    input ps_t ps,
-    input addr_t pc_in,
-    output addr_t pc_out
+  input bit clk,
+  input bit rst,
+  input ps_t ps,
+  input addr_t pc_in,
+  output addr_t pc_out
   );
 
 addr_t new_pc;
@@ -33,7 +33,7 @@ always_ff @(posedge clk) begin
 	if (rst == 1'b0) begin
 	 pc <= 16'h0000;
     pc_out <= 16'h0000;
-   end else begin	
+   end else begin
     pc <= new_pc;
     pc_out <= new_pc;
 	end
