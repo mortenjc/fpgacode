@@ -14,9 +14,11 @@ import common_types::mw_t;
 
 module top(
     input clk,
-    output wire [7:0] led5,
-	 output wire [7:0] led4,
-	 output wire [7:0] led3
+	 input reset,
+    output wire [7:0] led5,  // state
+	 output wire [7:0] led4,  // PC
+	 output wire [7:0] led3,  // data_hi
+	 output wire [7:0] led2   // data_lo
   );
 
   addr_t pcaddr_i = 16'b0;
@@ -28,6 +30,7 @@ module top(
 
   pcounter pcounter_i(
     .clk(clk),
+	 .rst(reset),
     .ps(ps_i),
     .pc_in(aaddr_i),
     .pc_out(pcaddr_i)
@@ -72,13 +75,20 @@ module top(
 	 );
 
   ledctrl led4_i (
-    .value(mdatao_i[7:4]),
+    .value(pcaddr_i[3:0]),
 	 .led(led4)
 	 );
 
+	 
   ledctrl led3_i (
-    .value(mdatao_i[3:0]),
+    .value(mdatao_i[7:4]),
 	 .led(led3)
 	 );
+
+  ledctrl led2_i (
+    .value(mdatao_i[3:0]),
+	 .led(led2)
+	 );
+	 
 
 endmodule

@@ -22,8 +22,8 @@ module ledctrl(
 	bit [6:0] led_dig_9 = 'b0010000;
 	bit [6:0] led_dig_A = 'b0001000;
 	bit [6:0] led_dig_B = 'b0000011;
-	bit [6:0] led_dig_C = 'b1000011;
-	bit [6:0] led_dig_D = 'b0000001;
+	bit [6:0] led_dig_C = 'b1000110;
+	bit [6:0] led_dig_D = 'b0100001;
 	bit [6:0] led_dig_E = 'b0000110;
 	bit [6:0] led_dig_F = 'b0001110;
 
