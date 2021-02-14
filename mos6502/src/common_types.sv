@@ -33,9 +33,10 @@ typedef enum logic[1:0] {
   HOLD, INC, REL, ABS
 } ps_t /* verilator public */ ;
 
-// ALU functions
-typedef enum logic[1:0] {
-  ANOP, AINC, AADD, ASUB
+// ALU functions - ANOP is not used
+typedef enum logic[2:0] {
+  ANOP, AINC, AADD, ASUB,
+  AAND, AEOR, AORA
 } alu_t /* verilator public */ ;
 
 typedef logic[15:0] addr_t /* verilator public */ ;
