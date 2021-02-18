@@ -56,20 +56,25 @@ def round(target, N, debug):
         if debug:
             print("{0:2} {1:5} {2:5} {3:5} {4:5} {5:5}".format(i, res, o1[i], c1, c2, c3))
         sum = sum + res
-    missed = target - int(sum/N*65536)
-    print("N({},{:4}): avg {:.6f} - {} ({})".format(target, N, 1.0*sum/N, int(sum/N*65536), missed))
-    return missed
+
+    avg = 1.0*sum/N
+    achieved = int(avg*65536)
+    missed = target - achieved
+    return (avg, achieved)
 
 
 
 def specificnumbers(N, debug):
-    round(4294951171, N, debug)
-    round(4294923131, N, debug)
-    round(4294903131, N, debug)
-    round(4294803131, N, debug)
-    round(4294003131, N, debug)
-    round(1234554321, N, debug)
-    round(100, N, debug)
+    numbers = [4294951171, 4294923131, 4294903131, 4294803131, 4294003131, 1234554321, 100]
+
+    print("N: {}".format(N))
+    print("Target      Achieved    Diff    Float")
+    print("--------------------------------------------")
+    for target in numbers:
+        avg, achieved = round(target, N, debug)
+        diff = target - achieved
+        prec = diff /(2**32)
+        print("{:10}  {:10}  {:6}  {:12.6f}  {:13.6e}".format(target, achieved, diff, avg, prec))
 
 
 def randomsample(N):
@@ -111,4 +116,7 @@ if __name__ == '__main__':
     elif args.s:
         specificnumbers(args.n, args.d)
     else:
-        round(args.t, args.n, args.d)
+        avg, achieved = round(args.t, args.n, args.d)
+        diff = args.t - achieved
+        prec = diff /(2**32)
+        print("{:10}  {:10}  {:6}  {:12.6f}  {:13.6e}".format(args.t, achieved, diff, avg, prec))
