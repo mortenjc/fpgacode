@@ -68,8 +68,8 @@ def specificnumbers(N, debug):
     numbers = [4294951171, 4294923131, 4294903131, 4294803131, 4294003131, 1234554321, 100]
 
     print("N: {}".format(N))
-    print("Target      Achieved    Diff    Float")
-    print("--------------------------------------------")
+    print("Target      Achieved    Diff    Average        Precision")
+    print("-----------------------------------------------------------")
     for target in numbers:
         avg, achieved = round(target, N, debug)
         diff = target - achieved
