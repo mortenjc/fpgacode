@@ -40,7 +40,7 @@ def round(target, N, debug):
         o2.append(out2)
         o3.append(out3)
         o4.append(out4)
-        #print("{} {} {} {}".format(out1, out2, out3, out4))
+        print("{} {} {} {}".format(out1, out2, out3, out4))
 
     sum = 0
     for i in range(N):
@@ -60,6 +60,7 @@ def round(target, N, debug):
     avg = 1.0*sum/N
     achieved = int(avg*65536)
     missed = target - achieved
+    #print(sum)
     return (avg, achieved)
 
 
@@ -73,7 +74,7 @@ def specificnumbers(N, debug):
     for target in numbers:
         avg, achieved = round(target, N, debug)
         diff = target - achieved
-        prec = diff /(2**32)
+        prec = diff / target
         print("{:10}  {:10}  {:6}  {:12.6f}  {:13.6e}".format(target, achieved, diff, avg, prec))
 
 
@@ -88,7 +89,8 @@ def randomsample(N):
         if i % 5000 == 0:
             print("{:7} max {}({}), min {}({})".format(i, max, maxi, min, mini))
 
-        miss = round(myint, N, False)
+        avg, achieved = round(myint, N, False)
+        miss = myint - achieved
         if miss > max:
             #print("new max ({}) for {}".format(miss, myint))
             max = miss
@@ -118,5 +120,5 @@ if __name__ == '__main__':
     else:
         avg, achieved = round(args.t, args.n, args.d)
         diff = args.t - achieved
-        prec = diff /(2**32)
+        prec = diff / args.t
         print("{:10}  {:10}  {:6}  {:12.6f}  {:13.6e}".format(args.t, achieved, diff, avg, prec))
