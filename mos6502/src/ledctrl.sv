@@ -6,7 +6,7 @@
 //===----------------------------------------------------------------------===//
 
 module ledctrl(
-   input bit[3:0] value,
+   input bit[4:0] value, // bit 4 is sign  0 == pos 1 == neg
 	output bit[7:0] led
 	);
 
@@ -27,27 +27,28 @@ module ledctrl(
 	bit [6:0] led_dig_E = 'b0000110;
 	bit [6:0] led_dig_F = 'b0001110;
 
-	bit [7:0] led_off =   'b11111111;
-	bit nodot = 1'b1;
+	bit [7:0] led_off =   'b11111111; // including dot
+	bit dot;
 
 	always_comb begin
-		unique case (value)
-			0  : led = {nodot, led_dig_0};
-			1  : led = {nodot, led_dig_1};
-			2  : led = {nodot, led_dig_2};
-			3  : led = {nodot, led_dig_3};
-			4  : led = {nodot, led_dig_4};
-			5  : led = {nodot, led_dig_5};
-			6  : led = {nodot, led_dig_6};
-			7  : led = {nodot, led_dig_7};
-			8  : led = {nodot, led_dig_8};
-			9  : led = {nodot, led_dig_9};
-			10 : led = {nodot, led_dig_A};
-			11 : led = {nodot, led_dig_B};
-			12 : led = {nodot, led_dig_C};
-			13 : led = {nodot, led_dig_D};
-			14 : led = {nodot, led_dig_E};
-			15 : led = {nodot, led_dig_F};
+	   dot = ~value[4];
+		unique case (value[3:0])
+			0  : led = {dot, led_dig_0};
+			1  : led = {dot, led_dig_1};
+			2  : led = {dot, led_dig_2};
+			3  : led = {dot, led_dig_3};
+			4  : led = {dot, led_dig_4};
+			5  : led = {dot, led_dig_5};
+			6  : led = {dot, led_dig_6};
+			7  : led = {dot, led_dig_7};
+			8  : led = {dot, led_dig_8};
+			9  : led = {dot, led_dig_9};
+			10 : led = {dot, led_dig_A};
+			11 : led = {dot, led_dig_B};
+			12 : led = {dot, led_dig_C};
+			13 : led = {dot, led_dig_D};
+			14 : led = {dot, led_dig_E};
+			15 : led = {dot, led_dig_F};
 	   default:
 	      led = led_off;
 	   endcase

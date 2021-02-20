@@ -11,8 +11,8 @@ module clockdiv(
 	output bit clk_fast
 	);
 
-  parameter CLK_HZ = 50000000;
-  parameter FAST_HZ = 5000000;
+  parameter CLK_HZ = 50000000;  // 50MHz
+  parameter FAST_HZ = 5000000;  // 5MHz
   parameter SLOW_HZ = 100;
   parameter TICKS_FAST = CLK_HZ / FAST_HZ;
   parameter TICKS_SLOW = CLK_HZ / SLOW_HZ;
@@ -29,7 +29,7 @@ module clockdiv(
   always_ff @(posedge clk_in) begin
 	  if (cnt_fast == FAST_MAX) begin
 	    cnt_fast = 0;
-		  new_fast = 1;
+		 new_fast = 1;
 	  end else begin
 	    cnt_fast++;
 	    new_fast = 0;
@@ -37,14 +37,14 @@ module clockdiv(
 
 	  if (cnt_slow == SLOW_MAX) begin
 	    cnt_slow = 0;
-		  new_slow = 1;
+		 new_slow = 1;
 	  end else begin
 	    cnt_slow++;
 	    new_slow = 0;
 	  end
 
     clk_slow <= new_slow;
-	  clk_fast <= new_fast;
+	 clk_fast <= new_fast;
   end
   /* verilator lint_on BLKSEQ */
 endmodule
