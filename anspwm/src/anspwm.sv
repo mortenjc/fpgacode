@@ -7,7 +7,7 @@
 
 module anspwm (
   input bit clk,
-  input bit rst,
+  input bit rst_n,
   input [31:0] tgt_in,
   output [15:0] val_out,
   output [31:0] diff_out
@@ -24,8 +24,8 @@ module anspwm (
     diff_out = target - quant;
   end
 
-  always_ff @(posedge clk) begin
-    if (rst) begin
+  always_ff @(posedge clk or negedge rst_n) begin
+    if (~rst_n) begin
       corr <= 0;
     end else begin
       corr <= diff_out;

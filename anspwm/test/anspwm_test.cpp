@@ -14,7 +14,7 @@
 struct TestCase {
   std::string name;
   // inputs
-  uint8_t rst;
+  uint8_t rst_n;
   uint32_t tgt_in;
   // expected outputs
   uint16_t exp_val_out;
@@ -40,9 +40,10 @@ anspwm * pwm;
 
   void SetUp( ) {
     pwm = new anspwm;
-    pwm->rst = 1;
+    pwm->rst_n = 0;
     pwm->clk = 1;
     pwm->eval();
+    pwm->rst_n = 1;
     pwm->clk = 0;
     pwm->eval();
   }
@@ -53,11 +54,13 @@ anspwm * pwm;
   }
 };
 
-TEST_F(ANSPWMTest, Loop20) {
-  for (int i = 0; i < 20; i++) {
-    pwm->rst = 0;
+TEST_F(ANSPWMTest, Loop15) {
+  uint16_t values[] = {18837, 18838, 18838, 18838, 18838, 18837, 18838, 18838, 18838, 18838, 18837, 18838, 18838, 18838, 18838};
+  for (int i = 0; i < 15; i++) {
+    pwm->rst_n = 1;
     pwm->tgt_in = (uint32_t)1234554321;
     clock_ticks(1);
+    ASSERT_EQ(pwm->val_out, values[i]);
     printf("%3d: val %5u, diff %5u\n", i, pwm->val_out, pwm->diff_out);
   }
 }
@@ -65,7 +68,7 @@ TEST_F(ANSPWMTest, Loop20) {
 TEST_F(ANSPWMTest, Loop100) {
   uint64_t sum{0};
   for (int i = 0; i < 100; i++) {
-    pwm->rst = 0;
+    pwm->rst_n = 1;
     pwm->tgt_in = (uint32_t)1234554321;
     clock_ticks(1);
     printf("%3d: val %5u, diff %5u\n", i, pwm->val_out, pwm->diff_out);
