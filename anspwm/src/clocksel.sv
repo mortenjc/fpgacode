@@ -2,7 +2,7 @@
 //===----------------------------------------------------------------------===//
 ///
 /// \file
-/// \brief switch between clocks a and b
+/// \brief clock multiplexer - select between clocks a and b
 //===----------------------------------------------------------------------===//
 
 module clocksel(
@@ -11,12 +11,12 @@ module clocksel(
   input clk_b,
   output clk_out
   );
-  
+
   always_comb begin
     if (sel == 0)
 	   clk_out = clk_a;
 	 else
 	   clk_out = clk_b;
   end
-  
+
 endmodule

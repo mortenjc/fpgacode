@@ -35,7 +35,7 @@ module add4wsign (
     if (~rst_n) begin
       sum <= 16'b0;
     end else begin
-       sum <= tmpsum;
+      sum <= tmpsum;
     end
   end
 

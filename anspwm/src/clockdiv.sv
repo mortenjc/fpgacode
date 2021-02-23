@@ -28,23 +28,23 @@ module clockdiv(
   /* verilator lint_off BLKSEQ */
   always_ff @(posedge clk_in) begin
 	  if (cnt_fast == FAST_MAX) begin
-	    cnt_fast = 0;
-		 new_fast = 1;
+			cnt_fast = 0;
+			new_fast = 1;
 	  end else begin
-	    cnt_fast++;
-	    new_fast = 0;
+			cnt_fast++;
+			new_fast = 0;
 	  end
 
 	  if (cnt_slow == SLOW_MAX) begin
-	    cnt_slow = 0;
-		 new_slow = 1;
+			cnt_slow = 0;
+			new_slow = 1;
 	  end else begin
-	    cnt_slow++;
-	    new_slow = 0;
+			cnt_slow++;
+			new_slow = 0;
 	  end
 
-    clk_slow <= new_slow;
-	 clk_fast <= new_fast;
+		clk_slow <= new_slow;
+		clk_fast <= new_fast;
   end
   /* verilator lint_on BLKSEQ */
 endmodule

@@ -56,8 +56,8 @@ module ddiff (
       $display("RESET");
       B <= 0;
       B_sign <= 0;
-		C <= 0;
-		C_sign <= 0;
+      C <= 0;
+      C_sign <= 0;
     end else begin
       B <= A;
       B_sign <= A_sign;
@@ -66,7 +66,5 @@ module ddiff (
       $display("A: %4d, AS: %0d, B: %4d, BS: %0d, C: %4d, CS: %0d", A, A_sign, B, B_sign, C, C_sign);
     end
 	end
-
-
 
  endmodule

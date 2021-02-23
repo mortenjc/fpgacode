@@ -2,7 +2,7 @@
 //===----------------------------------------------------------------------===//
 ///
 /// \file
-/// \brief delay data and sign one clock cycle
+/// \brief delay data and sign one to three clock cycles
 //===----------------------------------------------------------------------===//
 
 module delay3clk(
