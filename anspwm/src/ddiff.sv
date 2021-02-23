@@ -51,7 +51,7 @@ module ddiff (
     endcase
   end
 
-  always_ff @(posedge clk) begin
+  always_ff @(posedge clk or negedge rst_n) begin
     if (~rst_n) begin
       $display("RESET");
       B <= 0;

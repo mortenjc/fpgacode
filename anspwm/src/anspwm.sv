@@ -2,7 +2,7 @@
 //===----------------------------------------------------------------------===//
 ///
 /// \file
-/// \brief pulse width modulator
+/// \brief truncate and substract
 //===----------------------------------------------------------------------===//
 
 module anspwm (
@@ -31,7 +31,5 @@ module anspwm (
       corr <= diff_out;
     end
 	end
-
-
 
  endmodule

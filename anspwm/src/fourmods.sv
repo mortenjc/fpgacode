@@ -12,6 +12,7 @@ module fourmods(
   input clk_sel,  // SW8 - PIN_B14
   input osel,     // SW9 - PIN_F15
   input bit [7:0] tgt_val, // SW7 - SW0
+  
   output bit pwm_out,
   output bit [8:0] leds,
   output bit [7:0] hex5,
@@ -23,9 +24,8 @@ module fourmods(
   );
 
 
-  bit clk_in;
-  assign leds[0] = clk_in;
-  assign leds[1] = rst_n;
+
+
 
 
   // Generate 100 Hz and 5MHz
@@ -34,87 +34,52 @@ module fourmods(
 
   clockdiv clockdiv_i(
     .clk_in(clk),
-	  .clk_slow(clk_100Hz),
-	  .clk_fast(clk_5MHz)
+    .clk_slow(clk_100Hz),
+    .clk_fast(clk_5MHz)
   );
 
-  // Select manual or slow clock
+  // Select manual or 100Hz clock
+  bit clk_in;
   clocksel clocksel_i(
     .sel(clk_sel),
-	  .clk_a(clk_btn),
-	  .clk_b(clk_100Hz),
-	  .clk_out(clk_in)
+    .clk_a(clk_btn),
+    .clk_b(clk_100Hz),
+    .clk_out(clk_in)
   );
+  
+  assign leds[0] = clk_in;
+  assign leds[1] = rst_n;
 
   wire [31:0] tgt_in_i = {24'h4995cd, tgt_val};
-  wire [15:0] val1;
-  wire [15:0] val2;
-  wire [15:0] val3;
-  wire [15:0] val4;
 
 
   // MODULE 1
   wire [31:0] mod1_diff_out;
-
-  wire [15:0] val1_out;
+  wire [15:0] val1;
   anspwm mod1(
     .clk(clk_in),
     .rst_n(rst_n),
     .tgt_in(tgt_in_i),
-    .val_out(val1_out),
+    .val_out(val1),
     .diff_out(mod1_diff_out)
   );
 
   // delay this output 3 clocks
-  delay3clk(
+  wire [15:0] c0_out;
+  wire c0s_out;
+  delay3clk m1delay(
     .clk(clk_in),
     .rst_n(rst_n),
-    .val_in(val1_out),
+    .val_in(val1),
     .sign_in(1'b0),
-    .d3_out(val1),
-    .d3s_out(m1d3sgn_out)
+    .d3_out(c0_out),
+    .d3s_out(c0s_out)
   );
 
-  // // MOD1 DELAY 1
-  // wire [15:0] m1d1_out;
-  // wire m1d1sgn_out;
-  //
-  // delay1clk mod1d1(
-  //    .clk(clk_in),
-  //   .rst_n(rst_n),
-	//  .val_in(val1_out),
-	//  .sign_in(1'b0),
-	//  .val_out(m1d1_out),
-	//  .sign_out(m1d1sgn_out)
-  // );
-  //
-  // // MOD1 DELAY 2
-  // wire [15:0] m1d2_out;
-  // wire m1d2sgn_out;
-  //
-  // delay1clk m1d2(
-  //    .clk(clk_in),
-  //   .rst_n(rst_n),
-	//  .val_in(m1d1_out),
-	//  .sign_in(m1d1sgn_out),
-	//  .val_out(m1d2_out),
-	//  .sign_out(m1d2sgn_out)
-  // );
-  //
-  // // MOD1 DELAY 3
-  // wire m1d3sgn_out;
-  //
-  // delay1clk m1d3(
-  //    .clk(clk_in),
-  //   .rst_n(rst_n),
-	//  .val_in(m1d2_out),
-	//  .sign_in(m1d2sgn_out),
-	//  .val_out(val1),
-	//  .sign_out(m1d3sgn_out)
-  // );
 
   // MODULE 2
   wire [31:0] mod2_diff_out;
+  wire [15:0] val2;
   anspwm mod2(
     .clk(clk_in),
     .rst_n(rst_n),
@@ -123,54 +88,33 @@ module fourmods(
     .diff_out(mod2_diff_out)
   );
 
-	wire [15:0] c1;
-	wire c1_sgn;
-	ddiff ddiff1(
-	  .clk(clk_in),
-	  .rst_n(rst_n),
-	  .A(val2),
-	  .A_sign(1'b0),
-    .C(c1),
-	  .C_sign(c1_sgn)
-	);
-
-  // delay this output 2 clocks
-  delay3clk(
+  wire [15:0] m2d1;
+  wire m2d1s;
+  ddiff ddiff1(
     .clk(clk_in),
     .rst_n(rst_n),
-    .val_in(c1),
-    .sign_in(c1_sgn),
-    .d2_out(m2d2_out),
-    .d2s_out(m2d2sgn_out)
+    .A(val2),
+    .A_sign(1'b0),
+    .C(m2d1),
+    .C_sign(m2d1s)
   );
-	// // MOD2 DELAY 1
-  // wire [15:0] m2d1_out;
-  // wire m2d1sgn_out;
-  //
-  // delay1clk m2d1(
-  //    .clk(clk_in),
-  //   .rst_n(rst_n),
-	//  .val_in(c1),
-	//  .sign_in(c1_sgn),
-	//  .val_out(m2d1_out),
-	//  .sign_out(m2d1sgn_out)
-  // );
-  //
-  // // MOD2 DELAY 2
-  // wire [15:0] m2d2_out;
-  // wire m2d2sgn_out;
-  //
-  // delay1clk m2d2(
-  //    .clk(clk_in),
-  //   .rst_n(rst_n),
-	//  .val_in(m2d1_out),
-	//  .sign_in(m2d1sgn_out),
-	//  .val_out(m2d2_out),
-	//  .sign_out(m2d2sgn_out)
-  // );
+
+  // delay this output 2 clocks
+  wire [15:0] c1_out;
+  wire c1s_out;
+  delay3clk m2delay(
+    .clk(clk_in),
+    .rst_n(rst_n),
+    .val_in(m2d1),
+    .sign_in(m2d1s),
+    .d2_out(c1_out),
+    .d2s_out(c1s_out)
+  );
+
 
   // MODULE 3
   wire [31:0] mod3_diff_out;
+  wire [15:0] val3;
   anspwm mod3(
     .clk(clk_in),
     .rst_n(rst_n),
@@ -179,52 +123,40 @@ module fourmods(
     .diff_out(mod3_diff_out)
   );
 
-	wire [15:0] c2_1;
-	wire c2_sgn_1;
-	ddiff ddiff2(
-	  .clk(clk_in),
-	  .rst_n(rst_n),
-	  .A(val3),
-	  .A_sign(1'b0),
-    .C(c2_1),
-	  .C_sign(c2_sgn_1)
-	);
-
-	wire [15:0] c2_2;
-	wire c2_sgn_2;
-	ddiff ddiff2_2(
-	  .clk(clk_in),
-	  .rst_n(rst_n),
-	  .A(c2_1),
-	  .A_sign(c2_sgn_1),
-    .C(c2_2),
-	  .C_sign(c2_sgn_2)
-	);
-
-  // delay this output 1 clock
-  delay3clk(
+  wire [15:0] m3d1;
+  wire m3d1s;
+  ddiff ddiff2(
     .clk(clk_in),
     .rst_n(rst_n),
-    .val_in(c2_2),
-    .sign_in(c2_sgn_2),
-    .d2_out(m3d1_out),
-    .d2s_out(m3d1sgn_out)
+    .A(val3), .A_sign(1'b0),
+    .C(m3d1), .C_sign(m3d1s)
   );
-	// // MOD3 DELAY 1 (final)
-  // wire [15:0] m3d1_out;
-  // wire m3d1sgn_out;
-  //
-  // delay1clk m3d1(
-  //    .clk(clk_in),
-  //   .rst_n(rst_n),
-	//  .val_in(c2_2),
-	//  .sign_in(c2_sgn_2),
-	//  .val_out(m3d1_out),
-	//  .sign_out(m3d1sgn_out)
-  // );
+
+  wire [15:0]m3d2;
+  wire m3d2s;
+  ddiff ddiff2_2(
+    .clk(clk_in),
+    .rst_n(rst_n),
+    .A(m3d1), .A_sign(m3d1s),
+    .C(m3d2), .C_sign(m3d2s)
+   );
+
+  // delay this output 1 clock
+  wire [15:0] c2_out;
+  wire c2s_out;
+  delay3clk m3delay(
+    .clk(clk_in),
+    .rst_n(rst_n),
+    .val_in(m3d2),
+    .sign_in(m3d2s),
+    .d2_out(c2_out),
+    .d2s_out(c2s_out)
+  );
+
 
   // MODULE 4
   bit [31:0] unused;
+  wire [15:0] val4;
   anspwm mod4(
     .clk(clk_in),
     .rst_n(rst_n),
@@ -233,62 +165,56 @@ module fourmods(
     .diff_out(unused)
   );
 
-	wire [15:0] c3_1;
-	wire c3_sgn_1;
-	ddiff ddiff3(
-	  .clk(clk_in),
-	  .rst_n(rst_n),
-	  .A(val4),
-	  .A_sign(1'b0),
-    .C(c3_1),
-	  .C_sign(c3_sgn_1)
-	);
+   wire [15:0] m4d1;
+   wire m4d1s;
+   ddiff ddiff3(
+     .clk(clk_in),
+     .rst_n(rst_n),
+     .A(val4), .A_sign(1'b0),
+     .C(m4d1), .C_sign(m4d1s)
+   );
 
-	wire [15:0] c3_2;
-	wire c3_sgn_2;
-	ddiff ddiff3_2(
-	  .clk(clk_in),
-	  .rst_n(rst_n),
-	  .A(c3_1),
-	  .A_sign(c3_sgn_1),
-    .C(c3_2),
-	  .C_sign(c3_sgn_2)
-	);
+   wire [15:0] m4d2;
+   wire m4d2s;
+   ddiff ddiff3_2(
+     .clk(clk_in),
+     .rst_n(rst_n),
+     .A(m4d1), .A_sign(m4d1s),
+     .C(m4d2), .C_sign(m4d2s)
+   );
 
-	wire [15:0] c3_3;
-	wire c3_sgn_3;
-	ddiff ddiff3_3(
-	  .clk(clk_in),
-	  .rst_n(rst_n),
-	  .A(c3_2),
-	  .A_sign(c3_sgn_2),
-    .C(c3_3),
-	  .C_sign(c3_sgn_3)
-	);
+   wire [15:0] c3_out;
+   wire c3s_out;
+   ddiff ddiff3_3(
+     .clk(clk_in),
+     .rst_n(rst_n),
+     .A(m4d2),   .A_sign(m4d2s),
+     .C(c3_out), .C_sign(c3s_out)
+   );
 
 
   // SUM
-  wire [15:0] sum_i;
+  wire [15:0] duty_cycle;
   add4wsign add4wsign_i(
     .clk(clk_in),
-	  .rst_n(rst_n),
-	  .c0(val1),
-	  .c1(m2d2_out),
-	  .c1_sgn(m2d2sgn_out),
-	  .c2(m3d1_out),
-	  .c2_sgn(m3d1sgn_out),
-	  .c3(c3_3),
-	  .c3_sgn(c3_sgn_3),
-	  .val(sum_i)
+    .rst_n(rst_n),
+    .c0(c0_out),
+    .c1(c1_out),
+    .c1s(c1s_out),
+    .c2(c2_out),
+    .c2s(c2s_out),
+    .c3(c3_out),
+    .c3s(c3s_out),
+    .sum(duty_cycle)
   );
 
   //
   //
   pwm16 pwm16_i(
     .clk(clk_5MHz),
-	  .set_val(clk_in),
-	  .val(sum_i),
-	  .clk_out(pwm_out)
+     .set_val(clk_in),
+     .val(duty_cycle),
+     .clk_out(pwm_out)
   );
   //
   //
@@ -298,54 +224,54 @@ module fourmods(
   wire [4:0] led5_i, led4_i, led3_i, led2_i, led1_i, led0_i;
   ledselect ledsel(
     .sel(osel),
-	  .val_a(sum_i),
-	  .val_b(
-	    {
-		    1'b0,        tgt_in_i[7:4],
-		    1'b0,        tgt_in_i[3:0],
-		    1'b0,        val1[3:0],
-	      m2d2sgn_out, m2d2_out[3:0],
-	      m3d1sgn_out, m3d1_out[3:0],
-	      c3_sgn_3,    c3_3[3:0]
-	    }
-	  ),
-	  .led5(led5_i),
-	  .led4(led4_i),
-	  .led3(led3_i),
-	  .led2(led2_i),
-	  .led1(led1_i),
-	  .led0(led0_i)
+     .val_a(duty_cycle),
+     .val_b(
+       {
+          1'b0,    tgt_in_i[7:4],
+          1'b0,    tgt_in_i[3:0],
+          1'b0,    c0_out[3:0],
+          c1s_out, c1_out[3:0],
+          c2s_out, c2_out[3:0],
+          c3s_out, c3_out[3:0]
+       }
+     ),
+     .led5(led5_i),
+     .led4(led4_i),
+     .led3(led3_i),
+     .led2(led2_i),
+     .led1(led1_i),
+     .led0(led0_i)
   );
 
   //
   // hex5 - hex0 - either  contributions or sum
   ledctrl ledctrl_5(
-	  .value(led5_i),
-	  .led(hex5)
-	);
+     .value(led5_i),
+     .led(hex5)
+   );
 
   ledctrl ledctrl_4(
-	  .value(led4_i),
-	  .led(hex4)
-	);
+     .value(led4_i),
+     .led(hex4)
+   );
 
   ledctrl ledctrl_3(
-	  .value(led3_i),
-	  .led(hex3)
+     .value(led3_i),
+     .led(hex3)
   );
 
   ledctrl ledctrl_2(
-	  .value(led2_i),
-	  .led(hex2)
-	);
+     .value(led2_i),
+     .led(hex2)
+   );
 
   ledctrl ledctrl_1(
-	  .value(led1_i),
-	  .led(hex1)
-	);
+     .value(led1_i),
+     .led(hex1)
+   );
 
   ledctrl ledctrl_0(
-	  .value(led0_i),
-	  .led(hex0)
-	);
+     .value(led0_i),
+     .led(hex0)
+   );
 endmodule
