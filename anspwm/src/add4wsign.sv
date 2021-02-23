@@ -18,28 +18,28 @@ module add4wsign (
 
   output [15:0] val
   );
-  
+
   logic [15:0] sum;
-  
+
   always_comb begin
     unique case({c1_sgn, c2_sgn, c2_sgn})
-	   3'b000: sum = c0 + c1 + c2 + c3;
-		3'b001: sum = c0 + c1 + c2 - c3;
-		3'b010: sum = c0 + c1 - c2 + c3;
-		3'b011: sum = c0 + c1 - c2 - c3;
-		3'b100: sum = c0 - c1 + c2 + c3;
-		3'b101: sum = c0 + c1 + c2 - c3;
-		3'b110: sum = c0 - c1 - c2 + c3;
-		3'b111: sum = c0 - c1 - c2 - c3;
+	    3'b000: sum = c0 + c1 + c2 + c3;
+		  3'b001: sum = c0 + c1 + c2 - c3;
+		  3'b010: sum = c0 + c1 - c2 + c3;
+		  3'b011: sum = c0 + c1 - c2 - c3;
+		  3'b100: sum = c0 - c1 + c2 + c3;
+		  3'b101: sum = c0 + c1 + c2 - c3;
+		  3'b110: sum = c0 - c1 - c2 + c3;
+		  3'b111: sum = c0 - c1 - c2 - c3;
 	 endcase
   end
-  
-  always_ff @(posedge clk) begin
+
+  always_ff @(posedge clk or negedge rst_n) begin
     if (~rst_n) begin
       val <= 16'b0;
     end else begin
        val <= sum;
     end
   end
- 
+
  endmodule

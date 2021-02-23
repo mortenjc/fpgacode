@@ -7,7 +7,7 @@ build/$(1)/$(1): build/$(1)
 endef
 
 #MODULES = clockdiv anspwm ddiff
-MODULES = ddiff
+MODULES = delay3clk
 
 # Generate rules to make the test executable
 $(foreach mymod, $(MODULES), $(eval $(call my_test,$(mymod))))
