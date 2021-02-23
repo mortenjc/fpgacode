@@ -6,8 +6,8 @@ build/$(1)/$(1): build/$(1)
 	@make -C build/$(1) -j 8 -f $(1).mk
 endef
 
-#MODULES = clockdiv anspwm ddiff
-MODULES = delay3clk
+MODULES = clockdiv anspwm ddiff delay3clk add4wsign
+#MODULES = add4wsign
 
 # Generate rules to make the test executable
 $(foreach mymod, $(MODULES), $(eval $(call my_test,$(mymod))))

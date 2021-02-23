@@ -9,7 +9,7 @@
 module add4wsign (
   input bit clk,
   input bit rst_n,
-  
+
   input [15:0] c0, c1, c2, c3,
   input c1s, c2s, c3s,
 
@@ -25,7 +25,7 @@ module add4wsign (
       3'b010: tmpsum = c0 + c1 - c2 + c3;
       3'b011: tmpsum = c0 + c1 - c2 - c3;
       3'b100: tmpsum = c0 - c1 + c2 + c3;
-      3'b101: tmpsum = c0 + c1 + c2 - c3;
+      3'b101: tmpsum = c0 - c1 + c2 - c3;
       3'b110: tmpsum = c0 - c1 - c2 + c3;
       3'b111: tmpsum = c0 - c1 - c2 - c3;
     endcase
