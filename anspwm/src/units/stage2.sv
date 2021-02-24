@@ -10,12 +10,13 @@ module stage2 (
   input bit clk,
   input bit rst_n,
 
-  input [15:0] A,
+  input  [31:0] A,
   output [15:0] C,     // to final signed addition
   output Csgn,         // to final signed addition
   output [31:0] nxttgt // for next stage
   );
 
+  //
   wire [15:0] quant;
   quantize16 quantize16_i(
     .clk(clk),
@@ -25,6 +26,7 @@ module stage2 (
     .diff(nxttgt)
   );
 
+  //
   wire [15:0] dd;
   wire dds;
   ddiff3 ddiff3_i(

@@ -5,7 +5,7 @@
 /// \brief Top level module - refactored but still too messy
 //===----------------------------------------------------------------------===//
 
-module fourmods(
+module anspwm(
   input clk,      // 50MHz -  PIN_P11
   input clk_btn,  // KEY0 - PIN_B8
   input rst_n,    // KEY1 - PIN_A7
@@ -48,84 +48,23 @@ module fourmods(
 
   wire [31:0] tgt_in_i = {24'h4995cd, tgt_val};
 
-
-// Stage 1 - quantize, 0 delayed diff, 3 clk output delay
-  wire [31:0] s2target;
-  wire [15:0] c0_out;
-  wire c0s_out;
-  stage1 stage1_i(
-    .clk(clk_in),
+  // DSP Module - four stages and adder
+  logic [15:0] duty_cycle;
+  dspmod dspmod_i(
+    .clk(clk),
     .rst_n(rst_n),
-    .A(tgt_in_i),
-    .C(c0_out),
-    .Csgn(c0s_out),
-    .nxttgt(s2target)
-    );
-
-// Stage 2 - quantize, 1 delayed diff, 2 clk output delay
-  wire [31:0] s3target;
-  wire [15:0] c1_out;
-  wire c1s_out;
-  stage2 stage2_i(
-    .clk(clk_in),
-    .rst_n(rst_n),
-    .A(s2target),
-    .C(c1_out),
-    .Csgn(c1s_out),
-    .nxttgt(s3target)
-    );
-
-// Stage 3 - quantize, 2 delayed diff, 1 clk output delay
-  wire [31:0] s4target;
-  wire [15:0] c2_out;
-  wire c2s_out;
-  stage3 stage3_i(
-    .clk(clk_in),
-    .rst_n(rst_n),
-    .A(s3target),
-    .C(c2_out),
-    .Csgn(c2s_out),
-    .nxttgt(s4target)
-    );
-
-// Stage 4 - quantize, 3 delayed diff, 0 clk output delay
-  wire [15:0] c3_out;
-  wire c3s_out;
-  stage4 stage4_i(
-    .clk(clk_in),
-    .rst_n(rst_n),
-    .A(s4target),
-    .C(c3_out),
-    .Csgn(c3s_out)
-    );
-
-
-
-
-  // SUM
-  wire [15:0] duty_cycle;
-  add4wsign add4wsign_i(
-    .clk(clk_in),
-    .rst_n(rst_n),
-    .c0(c0_out),
-    .c1(c1_out),
-    .c1s(c1s_out),
-    .c2(c2_out),
-    .c2s(c2s_out),
-    .c3(c3_out),
-    .c3s(c3s_out),
-    .sum(duty_cycle)
+    .target(tgt_in_i),
+    .value(duty_cycle)
   );
 
-  //
-  //
+
+  // PWM module
   pwm16 pwm16_i(
     .clk(clk_5MHz),
     .set_val(clk_in),
     .val(duty_cycle),
     .clk_out(pwm_out)
   );
-  //
   //
 
 

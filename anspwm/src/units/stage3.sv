@@ -10,7 +10,7 @@ module stage3 (
   input bit clk,
   input bit rst_n,
 
-  input  [15:0] A,
+  input  [31:0] A,
   output [15:0] C,     // to final signed addition
   output Csgn,         // to final signed addition
   output [31:0] nxttgt // for next stage
