@@ -2,7 +2,7 @@
 //===----------------------------------------------------------------------===//
 ///
 /// \file
-/// \brief Top level module
+/// \brief Top level module - refactored but still too messy
 //===----------------------------------------------------------------------===//
 
 module fourmods(
@@ -22,10 +22,6 @@ module fourmods(
   output bit [7:0] hex1,
   output bit [7:0] hex0
   );
-
-
-
-
 
 
   // Generate 100 Hz and 5MHz
@@ -53,144 +49,57 @@ module fourmods(
   wire [31:0] tgt_in_i = {24'h4995cd, tgt_val};
 
 
-  // MODULE 1
-  wire [31:0] mod1_diff_out;
-  wire [15:0] val1;
-  anspwm mod1(
-    .clk(clk_in),
-    .rst_n(rst_n),
-    .tgt_in(tgt_in_i),
-    .val_out(val1),
-    .diff_out(mod1_diff_out)
-  );
-
-  // delay this output 3 clocks
+// Stage 1 - quantize, 0 delayed diff, 3 clk output delay
+  wire [31:0] s2target;
   wire [15:0] c0_out;
   wire c0s_out;
-  delay3clk m1delay(
+  stage1(
     .clk(clk_in),
     .rst_n(rst_n),
-    .val_in(val1),
-    .sign_in(1'b0),
-    .d3_out(c0_out),
-    .d3s_out(c0s_out)
-  );
+    .A(tgt_in_i),
+    .C(c0_out),
+    .Csgn(c0s_out),
+    .nxttgt(s2target)
+    );
 
-
-  // MODULE 2
-  wire [31:0] mod2_diff_out;
-  wire [15:0] val2;
-  anspwm mod2(
-    .clk(clk_in),
-    .rst_n(rst_n),
-    .tgt_in(mod1_diff_out),
-    .val_out(val2),
-    .diff_out(mod2_diff_out)
-  );
-
-  wire [15:0] m2d1;
-  wire m2d1s;
-  ddiff ddiff1(
-    .clk(clk_in),
-    .rst_n(rst_n),
-    .A(val2),
-    .A_sign(1'b0),
-    .C(m2d1),
-    .C_sign(m2d1s)
-  );
-
-  // delay this output 2 clocks
+// Stage 2 - quantize, 1 delayed diff, 2 clk output delay
+  wire [31:0] s3target;
   wire [15:0] c1_out;
   wire c1s_out;
-  delay3clk m2delay(
+  stage2(
     .clk(clk_in),
     .rst_n(rst_n),
-    .val_in(m2d1),
-    .sign_in(m2d1s),
-    .d2_out(c1_out),
-    .d2s_out(c1s_out)
-  );
+    .A(s2target),
+    .C(c1_out),
+    .Csgn(c1s_out),
+    .nxttgt(s3target)
+    );
 
-
-  // MODULE 3
-  wire [31:0] mod3_diff_out;
-  wire [15:0] val3;
-  anspwm mod3(
-    .clk(clk_in),
-    .rst_n(rst_n),
-    .tgt_in(mod2_diff_out),
-    .val_out(val3),
-    .diff_out(mod3_diff_out)
-  );
-
-  wire [15:0] m3d1;
-  wire m3d1s;
-  ddiff ddiff2(
-    .clk(clk_in),
-    .rst_n(rst_n),
-    .A(val3), .A_sign(1'b0),
-    .C(m3d1), .C_sign(m3d1s)
-  );
-
-  wire [15:0]m3d2;
-  wire m3d2s;
-  ddiff ddiff2_2(
-    .clk(clk_in),
-    .rst_n(rst_n),
-    .A(m3d1), .A_sign(m3d1s),
-    .C(m3d2), .C_sign(m3d2s)
-   );
-
-  // delay this output 1 clock
+// Stage 3 - quantize, 2 delayed diff, 1 clk output delay
+  wire [31:0] s4target;
   wire [15:0] c2_out;
   wire c2s_out;
-  delay3clk m3delay(
+  stage3(
     .clk(clk_in),
     .rst_n(rst_n),
-    .val_in(m3d2),
-    .sign_in(m3d2s),
-    .d2_out(c2_out),
-    .d2s_out(c2s_out)
-  );
+    .A(s3target),
+    .C(c2_out),
+    .Csgn(c2s_out),
+    .nxttgt(s4target)
+    );
 
-
-  // MODULE 4
-  bit [31:0] unused;
-  wire [15:0] val4;
-  anspwm mod4(
+// Stage 4 - quantize, 3 delayed diff, 0 clk output delay
+  wire [15:0] c3_out;
+  wire c3s_out;
+  stage3(
     .clk(clk_in),
     .rst_n(rst_n),
-    .tgt_in(mod3_diff_out),
-    .val_out(val4),
-    .diff_out(unused)
-  );
+    .A(s4target),
+    .C(c3_out),
+    .Csgn(c3s_out),
+    );
 
-   wire [15:0] m4d1;
-   wire m4d1s;
-   ddiff ddiff3(
-     .clk(clk_in),
-     .rst_n(rst_n),
-     .A(val4), .A_sign(1'b0),
-     .C(m4d1), .C_sign(m4d1s)
-   );
 
-   wire [15:0] m4d2;
-   wire m4d2s;
-   ddiff ddiff3_2(
-     .clk(clk_in),
-     .rst_n(rst_n),
-     .A(m4d1), .A_sign(m4d1s),
-     .C(m4d2), .C_sign(m4d2s)
-   );
-
-   wire [15:0] c3_out;
-   wire c3s_out;
-   ddiff ddiff3_3(
-     .clk(clk_in),
-     .rst_n(rst_n),
-     .A(m4d2),   .A_sign(m4d2s),
-     .C(c3_out), .C_sign(c3s_out)
-   );
 
 
   // SUM
@@ -212,9 +121,9 @@ module fourmods(
   //
   pwm16 pwm16_i(
     .clk(clk_5MHz),
-     .set_val(clk_in),
-     .val(duty_cycle),
-     .clk_out(pwm_out)
+    .set_val(clk_in),
+    .val(duty_cycle),
+    .clk_out(pwm_out)
   );
   //
   //
