@@ -53,7 +53,7 @@ module fourmods(
   wire [31:0] s2target;
   wire [15:0] c0_out;
   wire c0s_out;
-  stage1(
+  stage1 stage1_i(
     .clk(clk_in),
     .rst_n(rst_n),
     .A(tgt_in_i),
@@ -66,7 +66,7 @@ module fourmods(
   wire [31:0] s3target;
   wire [15:0] c1_out;
   wire c1s_out;
-  stage2(
+  stage2 stage2_i(
     .clk(clk_in),
     .rst_n(rst_n),
     .A(s2target),
@@ -79,7 +79,7 @@ module fourmods(
   wire [31:0] s4target;
   wire [15:0] c2_out;
   wire c2s_out;
-  stage3(
+  stage3 stage3_i(
     .clk(clk_in),
     .rst_n(rst_n),
     .A(s3target),
@@ -91,12 +91,12 @@ module fourmods(
 // Stage 4 - quantize, 3 delayed diff, 0 clk output delay
   wire [15:0] c3_out;
   wire c3s_out;
-  stage3(
+  stage4 stage4_i(
     .clk(clk_in),
     .rst_n(rst_n),
     .A(s4target),
     .C(c3_out),
-    .Csgn(c3s_out),
+    .Csgn(c3s_out)
     );
 
 

@@ -17,7 +17,7 @@ module stage2 (
   );
 
   wire [15:0] quant;
-  quantize16(
+  quantize16 quantize16_i(
     .clk(clk),
     .rst_n(rst_n),
     .target(A),
@@ -27,7 +27,7 @@ module stage2 (
 
   wire [15:0] dd;
   wire dds;
-  ddiff3(
+  ddiff3 ddiff3_i(
     .clk(clk),
     .rst_n(rst_n),
     .A(nxttgt),
@@ -35,11 +35,11 @@ module stage2 (
     .dd1s(dds)
     );
 
-  delay3clk(
+  delay3clk delay3clk_i(
     .clk(clk),
     .rst_n(rst_n),
     .val_in(dd),
-    .sgn_in(dds),
+    .sign_in(dds),
     .d2_out(C),
     .d2s_out(Csgn)
   );

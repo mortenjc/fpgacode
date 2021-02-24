@@ -17,7 +17,7 @@ module stage4 (
   );
 
   wire [15:0] quant;
-  quantize16(
+  quantize16 quantize16_i(
     .clk(clk),
     .rst_n(rst_n),
     .target(A),
@@ -25,7 +25,7 @@ module stage4 (
     .diff(nxttgt)
   );
 
-  ddiff3(
+  ddiff3 ddiff3_i(
     .clk(clk),
     .rst_n(rst_n),
     .A(nxttgt),
