@@ -1,29 +1,38 @@
 # Copyright (C) 2021 Morten Jagd Christensen, LICENSE: BSD2
 #
 
-define my_test
-build/$(1)/$(1): build/$(1)
-	@make -C build/$(1) -j 8 -f $(1).mk
+# Add comment
+define make_bintargets
+bin/$(1)Test: build/$(1)/$(1).mk
 endef
 
-MODULES = clockdiv anspwm ddiff delay3clk add4wsign
-#MODULES = add4wsign
+# Add comment
+define make_mktargets
+build/$(1)/$(1).mk: src/modules/$(1).sv test/$(1)_test.cpp
+	@verilator -Wall -cc src/modules/$(1).sv -y . \
+							-Mdir build/$(1) --prefix $(1) \
+	            --exe ../test/$(1)_test.cpp \
+							-o $(1)Test \
+	            -LDFLAGS "-L../../googletest/build/lib -lgtest -lpthread" \
+	            -CFLAGS "-std=c++11" \
+	            -CFLAGS "-I../../googletest/googletest/include/"
+	@make -C build/$(1) -j 8 -f $(1).mk
+	cp build/$(1)/$(1)Test bin
+endef
 
-# Generate rules to make the test executable
-$(foreach mymod, $(MODULES), $(eval $(call my_test,$(mymod))))
-
-TARGETS = $(join $(addsuffix /, $(addprefix build/, $(MODULES))), $(MODULES))
-
-build/%: src/%.sv
-	@verilator -Wall -cc $< -y . -Mdir $@ --prefix $(notdir $@) \
-            --exe ../../test/$(notdir $@)_test.cpp \
-            -LDFLAGS "-L../../googletest/build/lib -lgtest -lpthread" \
-            -CFLAGS "-std=c++11" \
-            -CFLAGS "-I../../googletest/googletest/include/"
+MODULES = add4wsign clockdiv ddiff delay3clk #quantize16
+TARGETS = $(addsuffix Test, $(addprefix bin/, $(MODULES)))
 
 
 all: directories $(TARGETS)
 	@echo "done"
+
+#
+$(foreach mymod, $(MODULES), $(eval $(call make_bintargets,$(mymod))))
+
+#
+$(foreach mymod, $(MODULES), $(eval $(call make_mktargets,$(mymod))))
+
 
 runtest: $(TARGETS)
 	for test in $(TARGETS); do ./$$test || exit 1; done
@@ -31,10 +40,9 @@ runtest: $(TARGETS)
 gtest:
 	./scripts/makegtest
 
-
-# make sure build directory i built
+# make sure build directory is created
 .PHONY: directories
-
+#
 directories: build
 
 build:
@@ -42,7 +50,7 @@ build:
 
 # Misc clean targets
 clean:
-	@rm -fr build *.bak
+	@rm -fr build *.bak bin/*
 
 realclean: clean
 	@rm -fr googletest db output_files simulation

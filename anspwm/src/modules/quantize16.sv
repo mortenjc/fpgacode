@@ -15,7 +15,9 @@ module quantize16 (
 
   bit [31:0] corr;
   bit [31:0] trunc;
+  /* verilator lint_off UNUSED */
   bit [31:0] tmp;
+  /* verilator lint_on UNUSED */
 
   always_comb begin
     tmp = target + corr;

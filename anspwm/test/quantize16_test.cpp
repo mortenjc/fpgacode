@@ -5,7 +5,7 @@
 /// \brief test harness for pulse-period generator
 //===----------------------------------------------------------------------===//
 
-#include <anspwm.h>
+#include <quantize16.h>
 #include <verilated.h>
 #include <gtest/gtest.h>
 #include <string>
@@ -25,69 +25,58 @@ std::vector<TestCase> Tests {
   {"test1", 0, 1234554321, 18837, 52689},
 };
 
-class ANSPWMTest: public ::testing::Test {
+class Q16Test: public ::testing::Test {
 protected:
-anspwm * pwm;
+quantize16 * q16;
 
   void clock_ticks(int N) {
     for (int i = 1; i <= N; i++) {
-      pwm->clk = 1;
-      pwm->eval();
-      pwm->clk = 0;
-      pwm->eval();
+      q16->clk = 1;
+      q16->eval();
+      q16->clk = 0;
+      q16->eval();
     }
   }
 
   void SetUp( ) {
-    pwm = new anspwm;
-    pwm->rst_n = 0;
-    pwm->clk = 1;
-    pwm->eval();
-    pwm->rst_n = 1;
-    pwm->clk = 0;
-    pwm->eval();
+    q16 = new quantize16;
+    q16->rst_n = 0;
+    q16->clk = 1;
+    q16->eval();
+    q16->rst_n = 1;
+    q16->clk = 0;
+    q16->eval();
   }
 
   void TearDown( ) {
-    pwm->final();
-    delete pwm;
+    q16->final();
+    delete q16;
   }
 };
 
-TEST_F(ANSPWMTest, Loop15) {
+TEST_F(Q16Test, Loop15) {
   uint16_t values[] = {18837, 18838, 18838, 18838, 18838, 18837, 18838, 18838, 18838, 18838, 18837, 18838, 18838, 18838, 18838};
   for (int i = 0; i < 15; i++) {
-    pwm->rst_n = 1;
-    pwm->tgt_in = (uint32_t)1234554321;
+    q16->rst_n = 1;
+    q16->tgt_in = (uint32_t)1234554321;
     clock_ticks(1);
-    ASSERT_EQ(pwm->val_out, values[i]);
-    printf("%3d: val %5u, diff %5u\n", i, pwm->val_out, pwm->diff_out);
+    ASSERT_EQ(q16->val_out, values[i]);
+    printf("%3d: val %5u, diff %5u\n", i, q16->val_out, q16->diff_out);
   }
 }
 
-TEST_F(ANSPWMTest, Loop100) {
+TEST_F(Q16Test, Loop100) {
   uint64_t sum{0};
   for (int i = 0; i < 100; i++) {
-    pwm->rst_n = 1;
-    pwm->tgt_in = (uint32_t)1234554321;
+    q16->rst_n = 1;
+    q16->tgt_in = (uint32_t)1234554321;
     clock_ticks(1);
-    printf("%3d: val %5u, diff %5u\n", i, pwm->val_out, pwm->diff_out);
-    sum += pwm->val_out;
+    printf("%3d: val %5u, diff %5u\n", i, q16->val_out, q16->diff_out);
+    sum += q16->val_out;
   }
   double avg = sum * 1.0/100;
   printf("Average value: %f (%u)\n", avg, (uint32_t)(65536 * avg));
 }
-
-// TEST_F(ANSPWMTest, Reset) {
-//   for (auto & Test : Tests) {
-//     printf("subtest: %s\n", Test.name.c_str());
-//     pwm->rst = Test.rst;
-//     pwm->tgt_in = Test.tgt_in;
-//     clock_ticks(1);
-//     ASSERT_EQ(pwm->val_out, Test.exp_val_out);
-//     ASSERT_EQ(pwm->diff_out, Test.exp_diff_out);
-//   }
-// }
 
 int main(int argc, char **argv) {
   Verilated::commandArgs(argc, argv);
