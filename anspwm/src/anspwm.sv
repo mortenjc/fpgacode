@@ -50,11 +50,13 @@ module anspwm(
 
   // DSP Module - four stages and adder
   logic [15:0] duty_cycle;
+  logic [29:0] debug;
   dspmod dspmod_i(
     .clk(clk),
     .rst_n(rst_n),
     .target(tgt_in_i),
-    .value(duty_cycle)
+    .value(duty_cycle),
+	 .debug(debug)
   );
 
 
@@ -73,16 +75,7 @@ module anspwm(
   ledselect ledsel(
     .sel(osel),
      .val_a(duty_cycle),
-     .val_b(
-       {
-          1'b0,    tgt_in_i[7:4],
-          1'b0,    tgt_in_i[3:0],
-          1'b0,    c0_out[3:0],
-          c1s_out, c1_out[3:0],
-          c2s_out, c2_out[3:0],
-          c3s_out, c3_out[3:0]
-       }
-     ),
+     .val_b(debug),
      .led5(led5_i),
      .led4(led4_i),
      .led3(led3_i),

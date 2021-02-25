@@ -10,15 +10,25 @@ module dspmod(
   input bit clk,
   input bit rst_n,
   input [31:0] target,
-  output [15:0] value
+  output [15:0] value,
+  output [29:0] debug
   );
+  
+  assign debug = {
+    1'b0,    target[7:4],
+    1'b0,    target[3:0],
+    1'b0,    c0_out[3:0],
+    c1s_out, c1_out[3:0],
+    c2s_out, c2_out[3:0],
+    c3s_out, c3_out[3:0]
+	 };
 
 // Stage 1 - quantize, 0 delayed diff, 3 clk output delay
   wire [31:0] s2target;
   wire [15:0] c0_out;
   wire c0s_out;
   stage1 stage1_i(
-    .clk(clk_in),
+    .clk(clk),
     .rst_n(rst_n),
     .A(target),
     .C(c0_out),
@@ -31,7 +41,7 @@ module dspmod(
   wire [15:0] c1_out;
   wire c1s_out;
   stage2 stage2_i(
-    .clk(clk_in),
+    .clk(clk),
     .rst_n(rst_n),
     .A(s2target),
     .C(c1_out),
@@ -44,7 +54,7 @@ module dspmod(
   wire [15:0] c2_out;
   wire c2s_out;
   stage3 stage3_i(
-    .clk(clk_in),
+    .clk(clk),
     .rst_n(rst_n),
     .A(s3target),
     .C(c2_out),
@@ -56,7 +66,7 @@ module dspmod(
   wire [15:0] c3_out;
   wire c3s_out;
   stage4 stage4_i(
-    .clk(clk_in),
+    .clk(clk),
     .rst_n(rst_n),
     .A(s4target),
     .C(c3_out),
@@ -66,7 +76,7 @@ module dspmod(
 
   // SUM
   add4wsign add4wsign_i(
-    .clk(clk_in),
+    .clk(clk),
     .rst_n(rst_n),
     .c0(c0_out),
     .c1(c1_out),
