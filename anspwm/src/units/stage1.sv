@@ -27,15 +27,17 @@ module stage1 (
   );
 
   // no delayed diff is required
-  /* verilator lint_off PINMISSING */
   delay3clk delay3clk_i(
     .clk(clk),
     .rst_n(rst_n),
     .val_in(quant),
     .sign_in(1'b1),
+	 .d1_out(),
+	 .d1s_out(),
+	 .d2_out(),
+	 .d2s_out(),
     .d3_out(C),
     .d3s_out(Csgn)
   );
-  /* verilator lint_on PINMISSING */
 
 endmodule

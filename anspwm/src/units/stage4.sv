@@ -28,7 +28,11 @@ module stage4 (
   ddiff3 ddiff3_i(
     .clk(clk),
     .rst_n(rst_n),
-    .A(nxttgt),
+    .A(quant),
+	 .dd1(),
+	 .dd1s(),
+	 .dd2(),
+	 .dd2s(),
     .dd3(C),
     .dd3s(Csgn)
     );

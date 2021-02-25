@@ -26,13 +26,12 @@ module dspmod(
 // Stage 1 - quantize, 0 delayed diff, 3 clk output delay
   wire [31:0] s2target;
   wire [15:0] c0_out;
-  wire c0s_out;
   stage1 stage1_i(
     .clk(clk),
     .rst_n(rst_n),
     .A(target),
     .C(c0_out),
-    .Csgn(c0s_out),
+    .Csgn(),
     .nxttgt(s2target)
     );
 
@@ -70,7 +69,8 @@ module dspmod(
     .rst_n(rst_n),
     .A(s4target),
     .C(c3_out),
-    .Csgn(c3s_out)
+    .Csgn(c3s_out),
+	 .nxttgt()
     );
 
 
