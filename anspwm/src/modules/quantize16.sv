@@ -20,10 +20,18 @@ module quantize16 (
   /* verilator lint_on UNUSED */
 
   always_comb begin
-    tmp = target + corr;
-    trunc = {tmp[31:16], 16'b0};
-    quant = trunc[31:16];
-    diff = target - trunc;
+    if (~rst_n) begin
+      tmp = 0;
+      trunc = 0;
+      quant = 0;
+      diff = 0;
+    end else begin
+      tmp = target + corr;
+      trunc = {tmp[31:16], 16'b0};
+      quant = trunc[31:16];
+      diff = tmp - trunc;
+    end
+    //$display("tmp %h, trunc %h, quant %h, diff %d", tmp, trunc, quant, diff);
   end
 
   always_ff @(posedge clk or negedge rst_n) begin
@@ -31,6 +39,7 @@ module quantize16 (
       corr <= 0;
     end else begin
       corr <= diff;
+
     end
 	end
 

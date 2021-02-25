@@ -20,7 +20,7 @@ build/$(1)/$(1).mk: src/modules/$(1).sv test/$(1)_test.cpp
 	cp build/$(1)/$(1)Test bin
 endef
 
-MODULES = add4wsign clockdiv ddiff delay3clk #quantize16
+MODULES = add4wsign clockdiv ddiff delay3clk quantize16
 TARGETS = $(addsuffix Test, $(addprefix bin/, $(MODULES)))
 
 
