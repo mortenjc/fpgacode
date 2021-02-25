@@ -21,9 +21,27 @@ struct TestCase {
   uint32_t exp_diff_out;
 };
 
+// we should add test cases here
 std::vector<TestCase> Tests {
   {"test1", 0, 1234554321, 18837, 52689},
 };
+
+struct RefTest {
+  uint32_t Target;
+  std::vector<uint16_t> Values;
+};
+// Here we can add specific testcases when we see the need
+// these should ALWAYS pass so any regressions affecting this
+// should be caught
+std::vector<struct RefTest> ReferenceTestExamples{
+  {1234554321,
+    {18837, 18838, 18838, 18838, 18838, 18837, 18838, 18838, 18838, 18838,
+     18837, 18838, 18838, 18838, 18838}},
+  {2331992345,
+    {35583, 35583, 35584, 35583, 35583, 35584, 35583, 35584, 35583, 35583,
+     35584, 35583, 35583, 35584, 35583, 35584, 35583, 35583}}
+};
+
 
 class Q16Test: public ::testing::Test {
 protected:
@@ -49,14 +67,8 @@ quantize16 * q16;
   }
 
   void SetUp( ) {
-    printf("<< Setup >>\n");
     q16 = new quantize16;
-    q16->rst_n = 0;
-    q16->clk = 1;
-    q16->eval();
-    q16->rst_n = 1;
-    q16->clk = 0;
-    q16->eval();
+    reset();
   }
 
   void TearDown( ) {
@@ -65,39 +77,6 @@ quantize16 * q16;
   }
 };
 
-struct RefTest {
-  uint32_t Target;
-  std::vector<uint16_t> Values;
-};
-
-std::vector<struct RefTest> ReferenceTestExamples{
-  {1234554321, {18837, 18838, 18838, 18838, 18838, 18837, 18838, 18838, 18838,
-                18838, 18837, 18838, 18838, 18838, 18838}},
-  {2331992345, {35583, 35583, 35584, 35583, 35583, 35584, 35583, 35584, 35583,
-                35583, 35584, 35583, 35583, 35584, 35583, 35584, 35583, 35583}}
-};
-
-// TEST_F(Q16Test, T1234554321_S15) {
-//   for (int i = 0; i < 15; i++) {
-//     q16->rst_n = 1;
-//     q16->target = ReferenceTestExamples[0].Target;
-//     clock_ticks(1);
-//     ASSERT_EQ(q16->quant, ReferenceTestExamples[0].Values[i]);
-//     printf("%3d: val %5u (exp %5u), diff %5u\n",
-//       i, q16->quant, ReferenceTestExamples[0].Values[i], q16->diff);
-//   }
-// }
-//
-// TEST_F(Q16Test, T2331992345_S18) {
-//   for (int i = 0; i < 18; i++) {
-//     q16->rst_n = 1;
-//     q16->target = ReferenceTestExamples[1].Target;
-//     clock_ticks(1);
-//     ASSERT_EQ(q16->quant, ReferenceTestExamples[1].Values[i]);
-//     printf("%3d: val %5u (exp %5u), diff %5u\n",
-//       i, q16->quant, ReferenceTestExamples[1].Values[i], q16->diff);
-//   }
-// }
 
 TEST_F(Q16Test, ReferenceTests) {
   for (auto & Test : ReferenceTestExamples) {
