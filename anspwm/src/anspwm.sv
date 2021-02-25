@@ -14,7 +14,7 @@ module anspwm(
   input bit [7:0] tgt_val, // SW7 - SW0
 
   output bit pwm_out,
-  output bit [8:0] leds,
+  output bit [1:0] leds,
   output bit [7:0] hex5,
   output bit [7:0] hex4,
   output bit [7:0] hex3,
@@ -52,7 +52,7 @@ module anspwm(
   logic [15:0] duty_cycle;
   logic [29:0] debug;
   dspmod dspmod_i(
-    .clk(clk),
+    .clk(clk_in),
     .rst_n(rst_n),
     .target(tgt_in_i),
     .value(duty_cycle),

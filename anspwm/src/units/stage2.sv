@@ -32,9 +32,13 @@ module stage2 (
   ddiff3 ddiff3_i(
     .clk(clk),
     .rst_n(rst_n),
-    .A(nxttgt),
+    .A(quant),
     .dd1(dd),
-    .dd1s(dds)
+    .dd1s(dds),
+	 .dd2(),
+    .dd2s(),
+	 .dd3(),
+    .dd3s()
     );
 
   delay3clk delay3clk_i(
@@ -42,8 +46,12 @@ module stage2 (
     .rst_n(rst_n),
     .val_in(dd),
     .sign_in(dds),
+	 .d1_out(),
+	 .d1s_out(),
     .d2_out(C),
-    .d2s_out(Csgn)
+    .d2s_out(Csgn),
+	 .d3_out(),
+	 .d3s_out()
   );
 
 endmodule
