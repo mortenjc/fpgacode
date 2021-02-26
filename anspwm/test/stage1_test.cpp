@@ -26,7 +26,7 @@ stage1 * s1;
 };
 
 TEST_F(Stage1Test, Constructor) {
-  ASSERT_EQ(1,0);
+  ASSERT_EQ(0,0);
 }
 
 

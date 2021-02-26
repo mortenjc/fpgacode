@@ -32,10 +32,12 @@ module stage1 (
     .rst_n(rst_n),
     .val_in(quant),
     .sign_in(1'b1),
-	 .d1_out(),
-	 .d1s_out(),
-	 .d2_out(),
-	 .d2s_out(),
+    /* verilator lint_off PINCONNECTEMPTY */
+    .d1_out(),
+    .d1s_out(),
+    .d2_out(),
+    .d2s_out(),
+    /* verilator lint_on PINCONNECTEMPTY */
     .d3_out(C),
     .d3s_out(Csgn)
   );

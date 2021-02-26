@@ -22,7 +22,7 @@ def block(tgt, delta):
     return out, diff
 
 
-def round(target, N, debug):
+def round(target, N, debug, verilog):
     delta1 = 0
     delta2 = 0
     delta3 = 0
@@ -40,9 +40,10 @@ def round(target, N, debug):
         o2.append(out2)
         o3.append(out3)
         o4.append(out4)
-        print("{} {} {} {}".format(out1, out2, out3, out4))
+        #print("{} {} {} {}".format(out1, out2, out3, out4))
 
     sum = 0
+    tc=""
     for i in range(N):
         c1 = val(o2, i) -   val(o2, i - 1)
         c2 = val(o3, i) - 2*val(o3, i - 1) +   val(o3, i - 2)
@@ -53,16 +54,26 @@ def round(target, N, debug):
         elif res < 0:
             res = 0
 
+        tc+="{}, ".format(o1[i])
+
         if debug:
             print("{0:2} {1:5} {2:5} {3:5} {4:5} {5:5}".format(i, res, o1[i], c1, c2, c3))
         sum = sum + res
-
+    if verilog:
+        print("{{{},".format(target))
+        print("   {{{}}}}},".format(tc))
     avg = 1.0*sum/N
     achieved = int(avg*65536)
     missed = target - achieved
     #print(sum)
     return (avg, achieved)
 
+
+def generateverilogtest():
+    for i in range(10):
+        target = random.randint(1000000, 4294003131)
+        N = random.randint(10, 30)
+        round(target, N, False, True)
 
 
 def specificnumbers(N, debug):
@@ -72,7 +83,7 @@ def specificnumbers(N, debug):
     print("Target      Achieved    Diff    Average        Precision")
     print("-----------------------------------------------------------")
     for target in numbers:
-        avg, achieved = round(target, N, debug)
+        avg, achieved = round(target, N, debug, False)
         diff = target - achieved
         prec = diff / target
         print("{:10}  {:10}  {:6}  {:12.6f}  {:13.6e}".format(target, achieved, diff, avg, prec))
@@ -89,7 +100,7 @@ def randomsample(N):
         if i % 5000 == 0:
             print("{:7} max {}({}), min {}({})".format(i, max, maxi, min, mini))
 
-        avg, achieved = round(myint, N, False)
+        avg, achieved = round(myint, N, False, False)
         miss = myint - achieved
         if miss > max:
             #print("new max ({}) for {}".format(miss, myint))
@@ -111,14 +122,17 @@ if __name__ == '__main__':
     parser.add_argument('-s', help='specific numbers', action='store_true')
     parser.add_argument('-r', help='random', action='store_true')
     parser.add_argument('-d', help='debug', action='store_true')
+    parser.add_argument('-g', help='generate test cases for verilator', action='store_true')
     args = parser.parse_args()
 
     if args.r:
         randomsample(args.n)
     elif args.s:
         specificnumbers(args.n, args.d)
+    elif args.g:
+        generateverilogtest()
     else:
-        avg, achieved = round(args.t, args.n, args.d)
+        avg, achieved = round(args.t, args.n, args.d, args.g)
         diff = args.t - achieved
         prec = diff / args.t
         print("{:10}  {:10}  {:6}  {:12.6f}  {:13.6e}".format(args.t, achieved, diff, avg, prec))
