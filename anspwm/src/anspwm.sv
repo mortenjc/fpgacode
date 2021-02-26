@@ -9,12 +9,10 @@ module anspwm(
   input clk,      // 50MHz -  PIN_P11
   input clk_btn,  // KEY0 - PIN_B8
   input rst_n,    // KEY1 - PIN_A7
-  input clk_sel,  // SW8 - PIN_B14
-  input osel,     // SW9 - PIN_F15
-  input bit [7:0] tgt_val, // SW7 - SW0
+  input bit [9:0] sw, // SW9 - SW0
 
   output bit pwm_out,
-  output bit [1:0] leds,
+  output bit [9:0] leds,
   output bit [7:0] hex5,
   output bit [7:0] hex4,
   output bit [7:0] hex3,
@@ -22,31 +20,34 @@ module anspwm(
   output bit [7:0] hex1,
   output bit [7:0] hex0
   );
-
-
-  // Generate 100 Hz and 5MHz
-  bit clk_100Hz;
-  bit clk_5MHz;
-
-  clockdiv clockdiv_i(
-    .clk_in(clk),
-    .clk_slow(clk_100Hz),
-    .clk_fast(clk_5MHz)
+  
+  
+  assign leds = sw;
+  
+  // Handle user control
+  bit clk_src;
+  bit disp_src;
+  bit [31:0] target;
+  control control_i(
+    .sw(sw),
+	 .clk_sel(clk_src),
+	 .disp_sel(disp_src),
+	 .target(target) 
   );
 
-  // Select manual or 100Hz clock
+  
+  // Clock module - clock division and clock multiplexer
   bit clk_in;
-  clocksel clocksel_i(
-    .sel(clk_sel),
-    .clk_a(clk_btn),
-    .clk_b(clk_100Hz),
-    .clk_out(clk_in)
+  bit clk_pwm;
+  clockunit clockunit_i(
+    .clk_src_fpga(clk),
+	 .clk_src_button(clk_btn),
+	 .clk_src(clk_src),
+	 .clk_out(clk_in),
+	 .clk_fast_out(clk_pwm)
   );
 
-  assign leds[0] = clk_in;
-  assign leds[1] = rst_n;
-
-  wire [31:0] tgt_in_i = {24'h4995cd, tgt_val};
+ //
 
   // DSP Module - four stages and adder
   logic [15:0] duty_cycle;
@@ -54,7 +55,7 @@ module anspwm(
   dspmod dspmod_i(
     .clk(clk_in),
     .rst_n(rst_n),
-    .target(tgt_in_i),
+    .target(target),
     .value(duty_cycle),
 	 .debug(debug)
   );
@@ -62,7 +63,7 @@ module anspwm(
 
   // PWM module
   pwm16 pwm16_i(
-    .clk(clk_5MHz),
+    .clk(clk_pwm),
     .set_val(clk_in),
     .val(duty_cycle),
     .clk_out(pwm_out)
@@ -73,7 +74,7 @@ module anspwm(
   // LED SELECTION
   wire [4:0] led5_i, led4_i, led3_i, led2_i, led1_i, led0_i;
   ledselect ledsel(
-    .sel(osel),
+    .sel(disp_src),
      .val_a(duty_cycle),
      .val_b(debug),
      .led5(led5_i),
