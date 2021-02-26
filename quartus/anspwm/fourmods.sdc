@@ -10,7 +10,7 @@ create_clock -name clk -period 20.000 [get_ports clk]
 create_clock -name clk_btn -period 20000.000 [get_ports clk_btn]
 
 # clk_fast is 5MHz 
-create_clock -name clockdiv:clockdiv_i|clk_fast -period 200.000 clockdiv:clockdiv_i|clk_fast
+create_clock -name clockunit:clockunit_i|clockdiv:clockdiv_i|clk_fast -period 200.000 clockunit:clockunit_i|clockdiv:clockdiv_i|clk_fast
 
 derive_pll_clocks -create_base_clocks
 derive_clock_uncertainty
