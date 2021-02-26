@@ -63,7 +63,7 @@ module ddiff (
       B_sign <= A_sign;
       C <= new_C;
       C_sign <= new_C_sign;
-      $display("A: %4d, AS: %0d, B: %4d, BS: %0d, C: %4d, CS: %0d", A, A_sign, B, B_sign, C, C_sign);
+      //$display("A: %4d, AS: %0d, B: %4d, BS: %0d, C: %4d, CS: %0d", A, A_sign, B, B_sign, C, C_sign);
     end
 	end
 

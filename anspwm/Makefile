@@ -24,8 +24,10 @@ build/$(1)/$(1).mk: src/$(2)/$(1).sv test/$(1)_test.cpp
 endef
 
 MODULES = add4wsign clockdiv ddiff delay3clk quantize16
-UNITS = stage1
-UNITS.stage1 = src/modules/quantize16.sv src/modules/delay3clk.sv
+UNITS = dspmod
+UNITS.dspmod = src/units/stage1.sv src/modules/quantize16.sv src/modules/delay3clk.sv \
+    src/units/stage2.sv src/units/ddiff3.sv src/modules/ddiff.sv src/units/stage3.sv  \
+		src/units/stage4.sv src/modules/add4wsign.sv
 TARGETS = $(addsuffix Test, $(addprefix bin/, $(MODULES))) $(addsuffix Test, $(addprefix bin/, $(UNITS)))
 
 vpath %.sv src/modules src/units
@@ -39,7 +41,7 @@ $(foreach module, $(MODULES), $(eval $(call make_bintargets,$(module))))
 $(foreach unit, $(UNITS), $(eval $(call make_bintargets,$(unit))))
 # dependencies
 $(foreach module, $(MODULES), $(eval $(call make_mktargets,$(module),modules)))
-$(eval $(call make_mktargets,stage1,units,$(UNITS.stage1)))
+$(eval $(call make_mktargets,dspmod,units,$(UNITS.dspmod)))
 
 #
 runtest: $(TARGETS)

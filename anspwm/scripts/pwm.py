@@ -33,6 +33,7 @@ def round(target, N, debug, verilog):
     o4 = []
     for i in range(N):
         out1, delta1 = block(target, delta1)
+        print(delta1)
         out2, delta2 = block(delta1, delta2)
         out3, delta3 = block(delta2, delta3)
         out4, delta4 = block(delta3, delta4)
@@ -40,7 +41,7 @@ def round(target, N, debug, verilog):
         o2.append(out2)
         o3.append(out3)
         o4.append(out4)
-        #print("{} {} {} {}".format(out1, out2, out3, out4))
+        print("{} {} {} {}".format(out1, out2, out3, out4))
 
     sum = 0
     tc=""

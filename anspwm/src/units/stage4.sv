@@ -29,10 +29,12 @@ module stage4 (
     .clk(clk),
     .rst_n(rst_n),
     .A(quant),
-	 .dd1(),
-	 .dd1s(),
-	 .dd2(),
-	 .dd2s(),
+    /* verilator lint_off PINCONNECTEMPTY */
+    .dd1(),
+    .dd1s(),
+    .dd2(),
+    .dd2s(),
+    /* verilator lint_on PINCONNECTEMPTY */
     .dd3(C),
     .dd3s(Csgn)
     );

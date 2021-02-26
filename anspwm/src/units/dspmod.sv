@@ -13,7 +13,7 @@ module dspmod(
   output [15:0] value,
   output [29:0] debug
   );
-  
+
   assign debug = {
     1'b0,    target[7:4],
     1'b0,    target[3:0],
@@ -31,7 +31,9 @@ module dspmod(
     .rst_n(rst_n),
     .A(target),
     .C(c0_out),
+    /* verilator lint_off PINCONNECTEMPTY */
     .Csgn(),
+    /* verilator lint_on PINCONNECTEMPTY */
     .nxttgt(s2target)
     );
 
@@ -70,7 +72,9 @@ module dspmod(
     .A(s4target),
     .C(c3_out),
     .Csgn(c3s_out),
-	 .nxttgt()
+    /* verilator lint_off PINCONNECTEMPTY */
+    .nxttgt()
+    /* verilator lint_on PINCONNECTEMPTY */
     );
 
 

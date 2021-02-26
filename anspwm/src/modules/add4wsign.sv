@@ -35,6 +35,8 @@ module add4wsign (
     if (~rst_n) begin
       sum <= 16'b0;
     end else begin
+      $display("sum: %d (%d %d) (%d %d) (%d %d)",
+         c0, c1, c1s, c2, c2s, c3, c3s);
       sum <= tmpsum;
     end
   end

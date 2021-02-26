@@ -35,10 +35,12 @@ module stage2 (
     .A(quant),
     .dd1(dd),
     .dd1s(dds),
-	 .dd2(),
+    /* verilator lint_off PINCONNECTEMPTY */
+    .dd2(),
     .dd2s(),
-	 .dd3(),
+    .dd3(),
     .dd3s()
+    /* verilator lint_on PINCONNECTEMPTY */
     );
 
   delay3clk delay3clk_i(
@@ -46,12 +48,16 @@ module stage2 (
     .rst_n(rst_n),
     .val_in(dd),
     .sign_in(dds),
-	 .d1_out(),
-	 .d1s_out(),
+    /* verilator lint_off PINCONNECTEMPTY */
+    .d1_out(),
+    .d1s_out(),
+    /* verilator lint_on PINCONNECTEMPTY */
     .d2_out(C),
     .d2s_out(Csgn),
-	 .d3_out(),
-	 .d3s_out()
+    /* verilator lint_off PINCONNECTEMPTY */
+    .d3_out(),
+    .d3s_out()
+    /* verilator lint_on PINCONNECTEMPTY */
   );
 
 endmodule

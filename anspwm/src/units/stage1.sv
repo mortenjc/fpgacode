@@ -31,7 +31,7 @@ module stage1 (
     .clk(clk),
     .rst_n(rst_n),
     .val_in(quant),
-    .sign_in(1'b1),
+    .sign_in(1'b0),
     /* verilator lint_off PINCONNECTEMPTY */
     .d1_out(),
     .d1s_out(),
