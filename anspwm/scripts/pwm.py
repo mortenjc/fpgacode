@@ -60,7 +60,7 @@ def round(target, N, debug, verilog):
         tc+="{}, ".format(o1[i])
 
         if debug:
-            print("{0:2} {1:5} {2:5} {3:5} {4:5} {5:5}".format(i, res, o1[i], c1, c2, c3))
+            print("{0:2} {1:5} ({2:}) {3:5} ({4:}) {5:5} {6:5} {7:5}".format(i, res, hex(res), o1[i], hex(o1[i]), c1, c2, c3))
         sum = sum + res
     if verilog:
         print("{{{},".format(target))

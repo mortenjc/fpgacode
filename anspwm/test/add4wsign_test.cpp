@@ -43,14 +43,18 @@ add4wsign * add4;
     }
   }
 
-  void SetUp( ) {
-    add4 = new add4wsign;
+  void reset() {
     add4->rst_n = 0;
     add4->clk = 1;
     add4->eval();
     add4->rst_n = 1;
     add4->clk = 0;
     add4->eval();
+  }
+
+  void SetUp( ) {
+    add4 = new add4wsign;
+    reset();
   }
 
   void TearDown( ) {
@@ -63,6 +67,8 @@ add4wsign * add4;
 TEST_F(ADD4Test, Basic) {
   for (auto & Test : Tests) {
     printf("subtest: %s\n", Test.name.c_str());
+    reset();
+    add4->rst_n = 1;
     add4->c0 = Test.c0;
     add4->c1 = Test.c1;
     add4->c1s = Test.c1s;
@@ -71,6 +77,7 @@ TEST_F(ADD4Test, Basic) {
     add4->c3 = Test.c3;
     add4->c3s = Test.c3s;
     clock_ticks(1);
+    //printf("sum %u\n",add4->sum);
     ASSERT_EQ(add4->sum, Test.exp_sum);
   }
 }

@@ -9,14 +9,12 @@
 module add4wsign (
   input bit clk,
   input bit rst_n,
-
-  input [15:0] c0, c1, c2, c3,
-  input c1s, c2s, c3s,
-
+  input bit [15:0] c0, c1, c2, c3,
+  input bit c1s, c2s, c3s,
   output [15:0] sum
   );
 
-  logic [15:0] tmpsum;
+  bit [15:0] tmpsum;
 
   always_comb begin
     unique case({c1s, c2s, c3s})
