@@ -25,10 +25,8 @@ uint32_t clocks{0};
     d->rst_n = 1;
     d->clk = 0;
     d->eval();
-    debug();
     d->clk = 1;
     d->eval();
-    debug();
     clocks++;
   }
 
@@ -62,6 +60,17 @@ TEST_F(DDIFFTest, Constructor) {
   one_pulse();
   d->A = 0;
   one_pulse();
+}
+
+
+TEST_F(DDIFFTest, ZeroIn) {
+  for (int i=0; i<100; i++) {
+    d->A = 0;
+    d->A_sign = 0;
+    one_pulse();
+    ASSERT_EQ(d->C, 0);
+    ASSERT_EQ(d->C_sign, 0);
+  }
 }
 
 // Based on target 1234554321

@@ -11,7 +11,7 @@ endef
 # $(2) get .sv from module/ or unit/
 # $(3) additional .sv sources (for units)
 define make_mktargets
-build/$(1)/$(1).mk: src/$(2)/$(1).sv test/$(1)_test.cpp
+build/$(1)/$(1).mk: src/$(2)/$(1).sv $(3) test/$(1)_test.cpp
 	@verilator -Wall -cc src/$(2)/$(1).sv $(3) -y . \
 							-Mdir build/$(1) --prefix $(1) \
 	            --exe ../test/$(1)_test.cpp \
@@ -24,10 +24,14 @@ build/$(1)/$(1).mk: src/$(2)/$(1).sv test/$(1)_test.cpp
 endef
 
 MODULES = add4wsign clockdiv ddiff delay3clk quantize16
-UNITS = dspmod
+
+UNITS = dspmod stage1 stage2
 UNITS.dspmod = src/units/stage1.sv src/modules/quantize16.sv src/modules/delay3clk.sv \
     src/units/stage2.sv src/units/ddiff3.sv src/modules/ddiff.sv src/units/stage3.sv  \
 		src/units/stage4.sv src/modules/add4wsign.sv
+UNITS.stage1 = src/modules/quantize16.sv src/modules/delay3clk.sv
+UNITS.stage2 = src/modules/quantize16.sv src/units/ddiff3.sv src/modules/ddiff.sv src/modules/delay3clk.sv
+
 TARGETS = $(addsuffix Test, $(addprefix bin/, $(MODULES))) $(addsuffix Test, $(addprefix bin/, $(UNITS)))
 
 vpath %.sv src/modules src/units
@@ -42,9 +46,11 @@ $(foreach unit, $(UNITS), $(eval $(call make_bintargets,$(unit))))
 # dependencies
 $(foreach module, $(MODULES), $(eval $(call make_mktargets,$(module),modules)))
 $(eval $(call make_mktargets,dspmod,units,$(UNITS.dspmod)))
+$(eval $(call make_mktargets,stage1,units,$(UNITS.stage1)))
+$(eval $(call make_mktargets,stage2,units,$(UNITS.stage2)))
 
 #
-runtest: $(TARGETS)
+runtest: all $(TARGETS)
 	for test in $(TARGETS); do ./$$test || exit 1; done
 
 gtest:

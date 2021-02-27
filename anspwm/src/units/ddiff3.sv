@@ -23,7 +23,7 @@ module ddiff3 (
     .clk(clk),
     .rst_n(rst_n),
     .A(A),
-    .A_sign(1'b1),
+    .A_sign(1'b0),
     .C(dd1),
     .C_sign(dd1s)
   );

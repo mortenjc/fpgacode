@@ -38,28 +38,98 @@ delay3clk * delay;
 
 
 TEST_F(Delay3Test, TestDelay1) {
-  delay->val_in = 42;
-  delay->sign_in = 1;
+
   delay->eval();
   ASSERT_EQ(delay->d1_out, 0);
-
-  clock_ticks(1);
-  delay->eval();
-  ASSERT_EQ(delay->d1_out, 42);
+  ASSERT_EQ(delay->d1s_out, 0);
   ASSERT_EQ(delay->d2_out, 0);
+  ASSERT_EQ(delay->d2s_out, 0);
   ASSERT_EQ(delay->d3_out, 0);
+  ASSERT_EQ(delay->d3s_out, 0);
+
+  delay->val_in = 42;
+  delay->sign_in = 1;
+  clock_ticks(1);
+  delay->eval();
+  ASSERT_EQ(delay->d1_out, 42);
+  ASSERT_EQ(delay->d1s_out, 1);
+  ASSERT_EQ(delay->d2_out,  0);
+  ASSERT_EQ(delay->d2s_out, 0);
+  ASSERT_EQ(delay->d3_out,  0);
+  ASSERT_EQ(delay->d3s_out, 0);
 
   clock_ticks(1);
   delay->eval();
   ASSERT_EQ(delay->d1_out, 42);
+  ASSERT_EQ(delay->d1s_out, 1);
   ASSERT_EQ(delay->d2_out, 42);
+  ASSERT_EQ(delay->d2s_out, 1);
   ASSERT_EQ(delay->d3_out, 0);
+  ASSERT_EQ(delay->d3s_out, 0);
 
   clock_ticks(1);
   delay->eval();
   ASSERT_EQ(delay->d1_out, 42);
+  ASSERT_EQ(delay->d1s_out, 1);
   ASSERT_EQ(delay->d2_out, 42);
+  ASSERT_EQ(delay->d2s_out, 1);
   ASSERT_EQ(delay->d3_out, 42);
+  ASSERT_EQ(delay->d3s_out, 1);
+}
+
+TEST_F(Delay3Test, TestDelay2) {
+
+  delay->eval();
+  ASSERT_EQ(delay->d1_out, 0);
+  ASSERT_EQ(delay->d1s_out, 0);
+  ASSERT_EQ(delay->d2_out, 0);
+  ASSERT_EQ(delay->d2s_out, 0);
+  ASSERT_EQ(delay->d3_out, 0);
+  ASSERT_EQ(delay->d3s_out, 0);
+
+  delay->val_in = 42;
+  delay->sign_in = 1;
+  clock_ticks(1);
+  delay->eval();
+  ASSERT_EQ(delay->d1_out, 42);
+  ASSERT_EQ(delay->d1s_out, 1);
+  ASSERT_EQ(delay->d2_out,  0);
+  ASSERT_EQ(delay->d2s_out, 0);
+  ASSERT_EQ(delay->d3_out,  0);
+  ASSERT_EQ(delay->d3s_out, 0);
+
+  delay->val_in = 43;
+  delay->sign_in = 0;
+  clock_ticks(1);
+  delay->eval();
+  ASSERT_EQ(delay->d1_out, 43);
+  ASSERT_EQ(delay->d1s_out, 0);
+  ASSERT_EQ(delay->d2_out, 42);
+  ASSERT_EQ(delay->d2s_out, 1);
+  ASSERT_EQ(delay->d3_out,  0);
+  ASSERT_EQ(delay->d3s_out, 0);
+
+  delay->val_in = 44;
+  delay->sign_in = 1;
+  clock_ticks(1);
+  delay->eval();
+  ASSERT_EQ(delay->d1_out, 44);
+  ASSERT_EQ(delay->d1s_out, 1);
+  ASSERT_EQ(delay->d2_out, 43);
+  ASSERT_EQ(delay->d2s_out, 0);
+  ASSERT_EQ(delay->d3_out, 42);
+  ASSERT_EQ(delay->d3s_out, 1);
+
+  delay->val_in = 45;
+  delay->sign_in = 0;
+  clock_ticks(1);
+  delay->eval();
+  ASSERT_EQ(delay->d1_out, 45);
+  ASSERT_EQ(delay->d1s_out, 0);
+  ASSERT_EQ(delay->d2_out, 44);
+  ASSERT_EQ(delay->d2s_out, 1);
+  ASSERT_EQ(delay->d3_out, 43);
+  ASSERT_EQ(delay->d3s_out, 0);
 }
 
 int main(int argc, char **argv) {

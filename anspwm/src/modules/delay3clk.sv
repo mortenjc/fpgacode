@@ -23,14 +23,14 @@ module delay3clk(
   always_ff @(posedge clk or negedge rst_n) begin
     if (~rst_n) begin
       d1_out <= 16'b0;
-        d1s_out <= 1'b0;
+      d1s_out <= 1'b0;
       d2_out <= 16'b0;
       d2s_out <= 1'b0;
       d3_out <= 16'b0;
       d3s_out <= 1'b0;
     end else begin
       d1_out <= val_in;
-        d1s_out <= sign_in;
+      d1s_out <= sign_in;
       d2_out <= d1_out;
       d2s_out <= d1s_out;
       d3_out <= d2_out;

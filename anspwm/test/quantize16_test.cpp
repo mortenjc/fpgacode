@@ -115,6 +115,15 @@ quantize16 * q16;
   }
 };
 
+TEST_F(Q16Test, AllZeroes) {
+  reset();
+  for (int i = 0; i < 100; i++) {
+    q16->target = 0;
+    clock_ticks(1);
+    ASSERT_EQ(q16->quant, 0);
+    ASSERT_EQ(q16->diff, 0);
+  }
+}
 
 TEST_F(Q16Test, ReferenceTests) {
   for (auto & Test : ReferenceTestExamples) {
