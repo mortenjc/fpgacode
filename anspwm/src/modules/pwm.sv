@@ -6,7 +6,7 @@
 //===----------------------------------------------------------------------===//
 
 module pwm16(
-  input clk,     // 5MHz
+  input clk,     // 5MHz or 6.5536MHz
   input set_val,
   input bit [15:0] val,
   output bit clk_out

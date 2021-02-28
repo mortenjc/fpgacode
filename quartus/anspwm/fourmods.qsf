@@ -134,6 +134,9 @@ set_location_assignment PIN_D12 -to sw[2]
 set_location_assignment PIN_C11 -to sw[1]
 set_location_assignment PIN_C10 -to sw[0]
 set_location_assignment PIN_H14 -to leds[9]
+set_location_assignment PIN_AB17 -to ext_clk_sel
+set_location_assignment PIN_AB20 -to ext_clk
+set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/units/ledunit.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/units/clockunit.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/units/control.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/units/dspmod.sv

@@ -6,10 +6,12 @@
 //===----------------------------------------------------------------------===//
 
 module anspwm(
-  input clk,      // 50MHz -  PIN_P11
-  input clk_btn,  // KEY0 - PIN_B8
-  input rst_n,    // KEY1 - PIN_A7
-  input bit [9:0] sw, // SW9 - SW0
+  input clk,             // 50MHz -  PIN_P11
+  input ext_clk,         //  6.5536MHz - PIN_AB20
+  input clk_btn,         // KEY0 - PIN_B8
+  input rst_n,           // KEY1 - PIN_A7
+  input bit [9:0] sw,    // SW9 - SW0
+  input bit ext_clk_sel, // PIN_AB17
 
   output bit pwm_out,
   output bit [9:0] leds,
@@ -22,14 +24,13 @@ module anspwm(
   );
   
   
-  assign leds = sw;
-  
   // Handle user control
-  bit clk_src;
+  bit [1:0] clk_src;
   bit disp_src;
   bit [31:0] target;
   control control_i(
     .sw(sw),
+	 .ext_clk_sel(ext_clk_sel),
 	 .clk_sel(clk_src),
 	 .disp_sel(disp_src),
 	 .target(target) 
@@ -41,8 +42,9 @@ module anspwm(
   bit clk_pwm;
   clockunit clockunit_i(
     .clk_src_fpga(clk),
+	 .clk_src_ext(ext_clk),
 	 .clk_src_button(clk_btn),
-	 .clk_src(clk_src),
+	 .clk_src_sel(clk_src),
 	 .clk_out(clk_in),
 	 .clk_fast_out(clk_pwm)
   );
@@ -71,49 +73,17 @@ module anspwm(
   //
 
 
-  // LED SELECTION
-  wire [4:0] led5_i, led4_i, led3_i, led2_i, led1_i, led0_i;
-  ledselect ledsel(
-    .sel(disp_src),
-     .val_a(duty_cycle),
-     .val_b(debug),
-     .led5(led5_i),
-     .led4(led4_i),
-     .led3(led3_i),
-     .led2(led2_i),
-     .led1(led1_i),
-     .led0(led0_i)
+  ledunit ledunit_i(
+	 .value(duty_cycle),
+	 .debug(debug),
+	 .switches(sw),
+	 .leds(leds),
+	 .hex5(hex5),
+	 .hex4(hex4),
+	 .hex3(hex3),
+	 .hex2(hex2),
+	 .hex1(hex1),
+	 .hex0(hex0)
   );
 
-  //
-  // hex5 - hex0 - either  contributions or sum
-  ledctrl ledctrl_5(
-     .value(led5_i),
-     .led(hex5)
-   );
-
-  ledctrl ledctrl_4(
-     .value(led4_i),
-     .led(hex4)
-   );
-
-  ledctrl ledctrl_3(
-     .value(led3_i),
-     .led(hex3)
-  );
-
-  ledctrl ledctrl_2(
-     .value(led2_i),
-     .led(hex2)
-   );
-
-  ledctrl ledctrl_1(
-     .value(led1_i),
-     .led(hex1)
-   );
-
-  ledctrl ledctrl_0(
-     .value(led0_i),
-     .led(hex0)
-   );
 endmodule
