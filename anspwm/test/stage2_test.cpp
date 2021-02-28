@@ -72,21 +72,21 @@ TEST_F(Stage2Test, ZeroIn) {
   printf("\n");
 }
 
-// TEST_F(Stage2Test, StandardExample) {
-//   for (int i = 0; i < RefTest2.size() + 3; i++) {
-//     s2->A = RefTest2[i].target;
-//     clock_ticks(1);
-//     printf("%2d: output %c%5u, diff %5u\n", i, s2->Csgn ? '-' : '+', s2->C, s2->nxttgt);
-//     if (i < RefTest2.size()) {
-//       ASSERT_EQ(s2->nxttgt, RefTest2[i].diff);
-//     }
-//
-//     if (i >= 3) {
-//       ASSERT_EQ(s2->C, RefTest2[i - 3].output);
-//       ASSERT_EQ(s2->Csgn, RefTest2[i - 3].sign);
-//     }
-//   }
-// }
+TEST_F(Stage2Test, StandardExample) {
+  for (int i = 0; i < RefTest2.size() + 3; i++) {
+    s2->A = RefTest2[i].target;
+    clock_ticks(1);
+    printf("%2d: output %c%5u, diff %5u\n", i, s2->Csgn ? '-' : '+', s2->C, s2->nxttgt);
+    if (i < RefTest2.size()) {
+      ASSERT_EQ(s2->nxttgt, RefTest2[i].diff);
+    }
+
+    if (i >= 3) {
+      ASSERT_EQ(s2->C, RefTest2[i - 3].output);
+      ASSERT_EQ(s2->Csgn, RefTest2[i - 3].sign);
+    }
+  }
+}
 
 
 

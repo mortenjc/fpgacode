@@ -1,27 +1,7 @@
 # Copyright (C) 2021 Morten Jagd Christensen, LICENSE: BSD2
 #
 
-# The main targets are the test executables: bin/xxxTest
-define make_bintargets
-bin/$(1)Test: build/$(1)/$(1).mk
-endef
-
-# Parametrise the dependencies
-# $(1) verilog module name
-# $(2) get .sv from module/ or unit/
-# $(3) additional .sv sources (for units)
-define make_mktargets
-build/$(1)/$(1).mk: src/$(2)/$(1).sv $(3) test/$(1)_test.cpp
-	@verilator -Wall -cc src/$(2)/$(1).sv $(3) -y . \
-							-Mdir build/$(1) --prefix $(1) \
-	            --exe ../test/$(1)_test.cpp \
-							-o $(1)Test \
-	            -LDFLAGS "-L../../googletest/build/lib -lgtest -lpthread" \
-	            -CFLAGS "-std=c++11" \
-	            -CFLAGS "-I../../googletest/googletest/include/"
-	@make -C build/$(1) -j 8 -f $(1).mk
-	cp build/$(1)/$(1)Test bin
-endef
+include Makefile.macros
 
 MODULES = add4wsign clockdiv ddiff delay3clk quantize16
 
@@ -45,9 +25,8 @@ $(foreach module, $(MODULES), $(eval $(call make_bintargets,$(module))))
 $(foreach unit, $(UNITS), $(eval $(call make_bintargets,$(unit))))
 # dependencies
 $(foreach module, $(MODULES), $(eval $(call make_mktargets,$(module),modules)))
-$(eval $(call make_mktargets,dspmod,units,$(UNITS.dspmod)))
-$(eval $(call make_mktargets,stage1,units,$(UNITS.stage1)))
-$(eval $(call make_mktargets,stage2,units,$(UNITS.stage2)))
+$(foreach unit, $(UNITS), $(eval $(call make_mktargets,$(unit),units,$(UNITS.$(unit)))))
+
 
 #
 runtest: all $(TARGETS)
