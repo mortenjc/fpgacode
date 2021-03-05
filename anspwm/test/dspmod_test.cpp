@@ -55,9 +55,6 @@ TEST_F(DSPModTest, Basic) {
   ASSERT_EQ(dsp->value, 0);
 
   clock_ticks(1);
-  ASSERT_EQ(dsp->value, 0);
-
-  clock_ticks(1);
   ASSERT_EQ(dsp->value, 18837);
 
   clock_ticks(1);
@@ -65,7 +62,7 @@ TEST_F(DSPModTest, Basic) {
 
   clock_ticks(1);
   printf("%d\n", dsp->value);
-  
+
   clock_ticks(1);
   printf("%d\n", dsp->value);
 }

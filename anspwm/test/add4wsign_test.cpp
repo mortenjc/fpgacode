@@ -34,27 +34,8 @@ class ADD4Test: public ::testing::Test {
 protected:
 add4wsign * add4;
 
-  void clock_ticks(int N) {
-    for (int i = 1; i <= N; i++) {
-      add4->clk = 1;
-      add4->eval();
-      add4->clk = 0;
-      add4->eval();
-    }
-  }
-
-  void reset() {
-    add4->rst_n = 0;
-    add4->clk = 1;
-    add4->eval();
-    add4->rst_n = 1;
-    add4->clk = 0;
-    add4->eval();
-  }
-
   void SetUp( ) {
     add4 = new add4wsign;
-    reset();
   }
 
   void TearDown( ) {
@@ -67,7 +48,6 @@ add4wsign * add4;
 TEST_F(ADD4Test, Basic) {
   for (auto & Test : Tests) {
     printf("subtest: %s\n", Test.name.c_str());
-    reset();
     add4->rst_n = 1;
     add4->c0 = Test.c0;
     add4->c1 = Test.c1;
@@ -76,14 +56,33 @@ TEST_F(ADD4Test, Basic) {
     add4->c2s = Test.c2s;
     add4->c3 = Test.c3;
     add4->c3s = Test.c3s;
-    clock_ticks(1);
-    //printf("sum %u\n",add4->sum);
+    add4->eval();
+    printf("sum %u\n",add4->sum);
     ASSERT_EQ(add4->sum, Test.exp_sum);
+  }
+}
+
+TEST_F(ADD4Test, Reset) {
+  for (auto & Test : Tests) {
+    printf("subtest: %s\n", Test.name.c_str());
+    add4->rst_n = 0;
+    add4->c0 = Test.c0;
+    add4->c1 = Test.c1;
+    add4->c1s = Test.c1s;
+    add4->c2 = Test.c2;
+    add4->c2s = Test.c2s;
+    add4->c3 = Test.c3;
+    add4->c3s = Test.c3s;
+    add4->eval();
+    //printf("sum %u\n",add4->sum);
+    ASSERT_EQ(add4->sum, 0);
   }
 }
 
 int main(int argc, char **argv) {
   Verilated::commandArgs(argc, argv);
   testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+  auto res = RUN_ALL_TESTS();
+  VerilatedCov::write("logs/add4wsign.dat");
+  return res;
 }

@@ -80,7 +80,6 @@ module dspmod(
 
   // SUM
   add4wsign add4wsign_i(
-    .clk(clk),
     .rst_n(rst_n),
     .c0(c0_out),
     .c1(c1_out),

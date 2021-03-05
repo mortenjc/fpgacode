@@ -1,7 +1,7 @@
 # Copyright (C) 2021 Morten Jagd Christensen, LICENSE: BSD2
 #
 
-include Makefile.macros
+include makefiles/Makefile.macros
 
 MODULES = add4wsign clockdiv ddiff delay3clk quantize16
 
@@ -13,6 +13,7 @@ UNITS.stage1 = src/modules/quantize16.sv src/modules/delay3clk.sv
 UNITS.stage2 = src/modules/quantize16.sv src/units/ddiff3.sv src/modules/ddiff.sv src/modules/delay3clk.sv
 
 TARGETS = $(addsuffix Test, $(addprefix bin/, $(MODULES))) $(addsuffix Test, $(addprefix bin/, $(UNITS)))
+COVTARGETS = $(addsuffix .dat, $(addprefix logs/, $(MODULES)))
 
 vpath %.sv src/modules src/units
 
@@ -28,12 +29,7 @@ $(foreach module, $(MODULES), $(eval $(call make_mktargets,$(module),modules)))
 $(foreach unit, $(UNITS), $(eval $(call make_mktargets,$(unit),units,$(UNITS.$(unit)))))
 
 
-#
-runtest: all $(TARGETS)
-	for test in $(TARGETS); do ./$$test || exit 1; done
-
-gtest:
-	./scripts/makegtest
+include makefiles/Makefile.test
 
 # make sure build directory is created
 .PHONY: directories
@@ -41,12 +37,11 @@ gtest:
 directories: build bin
 
 build:
-	@mkdir -p build
-	@mkdir -p bin
+	@mkdir -p build bin logs
 
 # Misc clean targets
 clean:
-	@rm -fr build *.bak bin
+	@rm -fr build bin logs *.bak
 
 realclean: clean
 	@rm -fr googletest db output_files simulation

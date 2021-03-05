@@ -155,5 +155,7 @@ TEST_F(Q16Test, Loop100) {
 int main(int argc, char **argv) {
   Verilated::commandArgs(argc, argv);
   testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+  auto res = RUN_ALL_TESTS();
+  VerilatedCov::write("logs/quantize16.dat");
+  return res;
 }

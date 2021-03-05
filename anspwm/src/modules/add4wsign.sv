@@ -7,35 +7,25 @@
 //===----------------------------------------------------------------------===//
 
 module add4wsign (
-  input bit clk,
   input bit rst_n,
   input bit [15:0] c0, c1, c2, c3,
   input bit c1s, c2s, c3s,
   output [15:0] sum
   );
 
-  bit [15:0] tmpsum;
-
   always_comb begin
     unique case({c1s, c2s, c3s})
-      3'b000: tmpsum = c0 + c1 + c2 + c3;
-      3'b001: tmpsum = c0 + c1 + c2 - c3;
-      3'b010: tmpsum = c0 + c1 - c2 + c3;
-      3'b011: tmpsum = c0 + c1 - c2 - c3;
-      3'b100: tmpsum = c0 - c1 + c2 + c3;
-      3'b101: tmpsum = c0 - c1 + c2 - c3;
-      3'b110: tmpsum = c0 - c1 - c2 + c3;
-      3'b111: tmpsum = c0 - c1 - c2 - c3;
+      3'b000: sum = c0 + c1 + c2 + c3;
+      3'b001: sum = c0 + c1 + c2 - c3;
+      3'b010: sum = c0 + c1 - c2 + c3;
+      3'b011: sum = c0 + c1 - c2 - c3;
+      3'b100: sum = c0 - c1 + c2 + c3;
+      3'b101: sum = c0 - c1 + c2 - c3;
+      3'b110: sum = c0 - c1 - c2 + c3;
+      3'b111: sum = c0 - c1 - c2 - c3;
     endcase
-  end
-
-  always_ff @(posedge clk or negedge rst_n) begin
     if (~rst_n) begin
-      sum <= 16'b0;
-    end else begin
-      $display("sum: %d (%d %d) (%d %d) (%d %d)",
-         c0, c1, c1s, c2, c2s, c3, c3s);
-      sum <= tmpsum;
+      sum = 16'b0;
     end
   end
 

@@ -15,26 +15,26 @@ module clockdiv(
   parameter CLK_HZ = 50000000;  // 50MHz
   parameter FAST_HZ = 5000000;  // 5MHz
   parameter SLOW_HZ = 100;
-  
+
   parameter TICKS_FAST = CLK_HZ / FAST_HZ;
   parameter TICKS_SLOW = CLK_HZ / SLOW_HZ;
   parameter FAST_MAX = TICKS_FAST - 1;
   parameter SLOW_MAX = TICKS_SLOW - 1;
-  
+
   parameter EXT_CLK_HZ =  6553600; // 6.5536MHz
-  
+
   parameter EXT_TICKS_SLOW = EXT_CLK_HZ / SLOW_HZ;
   parameter EXT_SLOW_MAX = EXT_TICKS_SLOW - 1;
 
   bit [31:0] fast_max;
   bit [31:0] slow_max;
-   
+
   bit [31:0] cnt_fast;
   bit new_fast;
-  
+
   bit [31:0] cnt_slow;
   bit new_slow;
-  
+
   always_comb begin
     if (ext_sel) begin
 	   fast_max = FAST_MAX; // notused
@@ -57,7 +57,7 @@ module clockdiv(
 	   end
     end else begin
 	   new_fast = ~new_fast;
-	 end
+	end
 
     if (cnt_slow == slow_max) begin
       cnt_slow = 0;
