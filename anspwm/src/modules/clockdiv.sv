@@ -16,14 +16,14 @@ module clockdiv(
   parameter FAST_HZ = 5000000;  // 5MHz
   parameter SLOW_HZ = 100;
 
-  parameter TICKS_FAST = CLK_HZ / FAST_HZ;
-  parameter TICKS_SLOW = CLK_HZ / SLOW_HZ;
+  parameter TICKS_FAST = CLK_HZ / FAST_HZ; // 10 ticks per divided clock
+  parameter TICKS_SLOW = CLK_HZ / SLOW_HZ; // 500000 ticks per slow clock
   parameter FAST_MAX = TICKS_FAST - 1;
   parameter SLOW_MAX = TICKS_SLOW - 1;
 
   parameter EXT_CLK_HZ =  6553600; // 6.5536MHz
 
-  parameter EXT_TICKS_SLOW = EXT_CLK_HZ / SLOW_HZ;
+  parameter EXT_TICKS_SLOW = EXT_CLK_HZ / SLOW_HZ; // 65536 ticks per slow clock
   parameter EXT_SLOW_MAX = EXT_TICKS_SLOW - 1;
 
   bit [31:0] fast_max;
@@ -37,7 +37,7 @@ module clockdiv(
 
   always_comb begin
     if (ext_sel) begin
-	   fast_max = FAST_MAX; // notused
+      fast_max = FAST_MAX;
       slow_max = EXT_SLOW_MAX;
     end else begin
       fast_max = FAST_MAX;
@@ -47,17 +47,14 @@ module clockdiv(
 
   /* verilator lint_off BLKSEQ */
   always_ff @(posedge clk_in) begin
-    if (ext_sel == 0) begin
-      if (cnt_fast == fast_max) begin
-        cnt_fast = 0;
-	     new_fast = 1;
-	   end else begin
-        cnt_fast++;
-		  new_fast = 0;
-	   end
+    //$display("cnt_fast %d, cnt_slow %d", cnt_fast, cnt_slow);
+    if (cnt_fast == fast_max) begin
+      cnt_fast = 0;
+      new_fast = 1;
     end else begin
-	   new_fast = ~new_fast;
-	end
+      cnt_fast++;
+      new_fast = 0;
+    end
 
     if (cnt_slow == slow_max) begin
       cnt_slow = 0;

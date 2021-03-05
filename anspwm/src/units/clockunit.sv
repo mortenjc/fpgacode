@@ -11,7 +11,7 @@ module clockunit(
   input bit clk_src_button,    // from push button
   input bit [1:0] clk_src_sel, // choose which source
 
-  output bit clk_out,
+  output bit clk_out,          // slow 100Hz update clock
   output bit clk_fast_out
   );
 
@@ -34,7 +34,7 @@ module clockunit(
   logic clk_div;
   clockdiv clockdiv_i(
     .clk_in(clk_src_fast),
-	 .ext_sel(ext_clk_sel),
+    .ext_sel(ext_clk_sel),
     .clk_slow(clk_100Hz),
     .clk_fast(clk_div)
   );

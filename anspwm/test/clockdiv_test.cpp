@@ -41,6 +41,7 @@ TEST_F(ClockDivTest, PulsesInASecond) {
   uint32_t ctr_fast{0};
   ASSERT_EQ(clock_i->clk_slow, 0);
   ASSERT_EQ(clock_i->clk_fast, 0);
+    clock_i->ext_sel = 0;
   for (int i = 0; i < 50'000'000; i++) {
     clock_ticks(1);
     if (clock_i->clk_slow)
@@ -66,7 +67,7 @@ TEST_F(ClockDivTest, PulsesInASecondExt) {
     if (clock_i->clk_fast)
       ctr_fast++;
   }
-  ASSERT_EQ(ctr_fast, 6'553'600);
+  ASSERT_EQ(ctr_fast, 655'360);
   ASSERT_EQ(ctr_slow, 100);
 }
 
