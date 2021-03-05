@@ -6,9 +6,9 @@
 //===----------------------------------------------------------------------===//
 
 module anspwm(
-  input clk,             // 50MHz -  PIN_P11
+  input max10_clk,    // 50MHz -  PIN_P11
   input ext_clk,         //  6.5536MHz - PIN_AB20
-  input clk_btn,         // KEY0 - PIN_B8
+  input btn_clk,         // KEY0 - PIN_B8
   input rst_n,           // KEY1 - PIN_A7
   input bit [9:0] sw,    // SW9 - SW0
   input bit ext_clk_sel, // PIN_AB17
@@ -41,9 +41,9 @@ module anspwm(
   bit clk_in;
   bit clk_pwm;
   clockunit clockunit_i(
-    .clk_src_fpga(clk),
+    .clk_src_fpga(max10_clk),
 	 .clk_src_ext(ext_clk),
-	 .clk_src_button(clk_btn),
+	 .clk_src_button(btn_clk),
 	 .clk_src_sel(clk_src),
 	 .clk_out(clk_in),
 	 .clk_fast_out(clk_pwm)
