@@ -45,7 +45,7 @@ module anspwm(
 	 .clk_src_ext(ext_clk),
 	 .clk_src_button(btn_clk),
 	 .clk_src_sel(clk_src),
-	 .clk_out(clk_in),
+	 .clk_slow_out(clk_in),
 	 .clk_fast_out(clk_pwm)
   );
 

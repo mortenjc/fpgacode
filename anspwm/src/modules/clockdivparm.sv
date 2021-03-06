@@ -6,7 +6,7 @@
 //===----------------------------------------------------------------------===//
 
 module clockdivparm #(
-  parameter DIVIDER = 10)(
+  parameter DIVIDER=10)(
   input bit clk,
   output bit clk_out
   );
@@ -21,7 +21,7 @@ module clockdivparm #(
 		end else begin
 		  counter <= counter + 1;
 		end
-		clk_out <= (counter < DIVIDER/2) ? 1 : 0;
+		clk_out <= (counter < DIVIDER/2) ? 1'b1 : 1'b0;
   end
 
 endmodule
