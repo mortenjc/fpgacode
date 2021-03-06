@@ -3,6 +3,7 @@
 ///
 /// \file
 /// \brief clock multiplexer - select between clocks a and b
+/// \todo UNUSED so far
 //===----------------------------------------------------------------------===//
 
 module fastclkmux(

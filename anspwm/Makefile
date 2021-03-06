@@ -3,15 +3,17 @@
 
 include makefiles/Makefile.macros
 
-MODULES = add4wsign clockdiv ddiff delay3clk quantize16
-
+MODULES = add4wsign clockdivparm ddiff delay3clk quantize16
 UNITS = dspmod stage1 stage2 clockunit
-UNITS.dspmod = src/units/stage1.sv src/modules/quantize16.sv src/modules/delay3clk.sv \
-    src/units/stage2.sv src/units/ddiff3.sv src/modules/ddiff.sv src/units/stage3.sv  \
-		src/units/stage4.sv src/modules/add4wsign.sv
+
+UNITS.dspmod = src/units/stage1.sv src/modules/quantize16.sv \
+      src/modules/delay3clk.sv src/units/stage2.sv src/units/ddiff3.sv \
+			src/modules/ddiff.sv src/units/stage3.sv src/units/stage4.sv \
+			src/modules/add4wsign.sv
 UNITS.stage1 = src/modules/quantize16.sv src/modules/delay3clk.sv
-UNITS.stage2 = src/modules/quantize16.sv src/units/ddiff3.sv src/modules/ddiff.sv src/modules/delay3clk.sv
-UNITS.clockunit = src/modules/clockdiv.sv src/modules/clocksel.sv src/modules/fastclkmux.sv
+UNITS.stage2 = src/modules/quantize16.sv src/units/ddiff3.sv \
+      src/modules/ddiff.sv src/modules/delay3clk.sv
+UNITS.clockunit = src/modules/clockdivparm.sv src/modules/clocksel.sv
 
 TARGETS = $(addsuffix Test, $(addprefix bin/, $(MODULES))) $(addsuffix Test, $(addprefix bin/, $(UNITS)))
 COVTARGETS = $(addsuffix .dat, $(addprefix logs/, $(MODULES)))

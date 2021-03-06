@@ -5,8 +5,8 @@
 /// \brief a mod N clock divider
 //===----------------------------------------------------------------------===//
 
-module clockdiv #(
-  parameter DIVIDER = 10;)(
+module clockdivparm #(
+  parameter DIVIDER = 10)(
   input bit clk,
   output bit clk_out
   );
