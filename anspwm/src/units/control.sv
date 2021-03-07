@@ -16,11 +16,9 @@ module control (
   input bit [9:0] sw,
   input bit ext_clk_sel,
   output bit [1:0] clk_sel,
-  output bit disp_sel,
   output [31:0] target
   );
 
-  assign disp_sel = sw[9];
   assign clk_sel = {sw[8], ext_clk_sel};
   bit [7:0] value;
 

@@ -1,0 +1,12 @@
+
+
+quartus_map --read_settings_files=on --write_settings_files=off anspwm -c fourmods
+
+quartus_fit --read_settings_files=off --write_settings_files=off anspwm -c fourmods
+
+quartus_asm --read_settings_files=off --write_settings_files=off anspwm -c fourmods
+
+quartus_eda --read_settings_files=off --write_settings_files=off anspwm -c fourmods
+
+
+

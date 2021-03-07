@@ -26,13 +26,11 @@ module anspwm(
   
   // Handle user control
   bit [1:0] clk_src;
-  bit disp_src;
   bit [31:0] target;
   control control_i(
     .sw(sw),
 	 .ext_clk_sel(ext_clk_sel),
 	 .clk_sel(clk_src),
-	 .disp_sel(disp_src),
 	 .target(target) 
   );
 
