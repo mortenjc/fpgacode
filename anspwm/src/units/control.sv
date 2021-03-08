@@ -20,18 +20,22 @@ module control (
   );
 
   assign clk_sel = {sw[8], ext_clk_sel};
-  bit [7:0] value;
-
+  
+  //bit [7:0] value;
   // 1'234'554'321 = 0x4995CDD1
-  always_comb begin
-	 value = {sw[5:0], 2'b0};
-	 unique case (sw[7:6])
-    0: target = {32'h4995CDD1};
-    1: target = {16'h4995, value, 8'hD1};
-    2: target = {8'h49, value, 16'hCDD1};
-    3: target = {     value, 24'h95CDD1};
-	 endcase
-  end
+  //always_comb begin
+  //value = {sw[5:0], 2'b0};
+  //unique case (sw[7:6])
+  // 0: target = {32'h4995CDD1};
+  // 1: target = {16'h4995, value, 8'hD1};
+  // 2: target = {8'h49, value, 16'hCDD1};
+  // 3: target = {     value, 24'h95CDD1};
+  //	endcase
+  //end
 
+  target1v target1v_i(
+  .value(sw[5:0]),
+  .target(target)
+  );
 
 endmodule

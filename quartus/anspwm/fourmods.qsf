@@ -136,6 +136,7 @@ set_location_assignment PIN_AB17 -to ext_clk_sel
 set_location_assignment PIN_AB20 -to ext_clk
 set_location_assignment PIN_B8 -to btn_clk
 set_location_assignment PIN_P11 -to max10_clk
+set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/modules/target1v.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/modules/clockdivparm.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/modules/fastclkmux.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/units/ledunit.sv
