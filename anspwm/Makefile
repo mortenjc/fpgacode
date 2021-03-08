@@ -3,7 +3,7 @@
 
 include makefiles/Makefile.macros
 
-MODULES = add4wsign clockdivparm ddiff delay3clk quantize16
+MODULES = add4wsign clockdivparm ddiff delay3clk quantize16 target1v
 UNITS = dspmod stage1 stage2 clockunit
 
 UNITS.dspmod = src/units/stage1.sv src/modules/quantize16.sv \
