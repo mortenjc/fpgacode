@@ -2,7 +2,7 @@
 //===----------------------------------------------------------------------===//
 ///
 /// \file
-/// \brief Top level module - refactored but still too messy
+/// \brief Top level module - refactored
 //===----------------------------------------------------------------------===//
 
 module anspwm(

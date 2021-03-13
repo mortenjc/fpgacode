@@ -59,25 +59,27 @@ set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+
+set_location_assignment PIN_AB17 -to ext_clk_sel
+set_location_assignment PIN_AB20 -to ext_clk
+set_location_assignment PIN_B8 -to btn_clk
+set_location_assignment PIN_P11 -to max10_clk
+set_location_assignment PIN_A7 -to rst_n
+set_location_assignment PIN_V5 -to pwm_out
+
+set_location_assignment PIN_H14 -to leds[9]
 set_location_assignment PIN_A11 -to leds[8]
-set_location_assignment PIN_E14 -to leds[6]
 set_location_assignment PIN_D14 -to leds[7]
+set_location_assignment PIN_E14 -to leds[6]
 set_location_assignment PIN_C13 -to leds[5]
 set_location_assignment PIN_D13 -to leds[4]
 set_location_assignment PIN_B10 -to leds[3]
 set_location_assignment PIN_A10 -to leds[2]
 set_location_assignment PIN_A9 -to leds[1]
 set_location_assignment PIN_A8 -to leds[0]
-set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
-set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
-set_location_assignment PIN_F17 -to hex4[7]
-set_location_assignment PIN_F20 -to hex4[6]
-set_location_assignment PIN_F19 -to hex4[5]
-set_location_assignment PIN_H19 -to hex4[4]
-set_location_assignment PIN_J18 -to hex4[3]
-set_location_assignment PIN_E19 -to hex4[2]
-set_location_assignment PIN_E20 -to hex4[1]
-set_location_assignment PIN_F18 -to hex4[0]
+
 set_location_assignment PIN_L19 -to hex5[7]
 set_location_assignment PIN_N20 -to hex5[6]
 set_location_assignment PIN_N19 -to hex5[5]
@@ -86,15 +88,14 @@ set_location_assignment PIN_N18 -to hex5[3]
 set_location_assignment PIN_L18 -to hex5[2]
 set_location_assignment PIN_K20 -to hex5[1]
 set_location_assignment PIN_J20 -to hex5[0]
-set_location_assignment PIN_A7 -to rst_n
-set_location_assignment PIN_A19 -to hex2[7]
-set_location_assignment PIN_B22 -to hex2[6]
-set_location_assignment PIN_C22 -to hex2[5]
-set_location_assignment PIN_B21 -to hex2[4]
-set_location_assignment PIN_A21 -to hex2[3]
-set_location_assignment PIN_B19 -to hex2[2]
-set_location_assignment PIN_A20 -to hex2[1]
-set_location_assignment PIN_B20 -to hex2[0]
+set_location_assignment PIN_F17 -to hex4[7]
+set_location_assignment PIN_F20 -to hex4[6]
+set_location_assignment PIN_F19 -to hex4[5]
+set_location_assignment PIN_H19 -to hex4[4]
+set_location_assignment PIN_J18 -to hex4[3]
+set_location_assignment PIN_E19 -to hex4[2]
+set_location_assignment PIN_E20 -to hex4[1]
+set_location_assignment PIN_F18 -to hex4[0]
 set_location_assignment PIN_D22 -to hex3[7]
 set_location_assignment PIN_E17 -to hex3[6]
 set_location_assignment PIN_D19 -to hex3[5]
@@ -103,14 +104,14 @@ set_location_assignment PIN_C19 -to hex3[3]
 set_location_assignment PIN_E21 -to hex3[2]
 set_location_assignment PIN_E22 -to hex3[1]
 set_location_assignment PIN_F21 -to hex3[0]
-set_location_assignment PIN_D15 -to hex0[7]
-set_location_assignment PIN_C17 -to hex0[6]
-set_location_assignment PIN_D17 -to hex0[5]
-set_location_assignment PIN_E16 -to hex0[4]
-set_location_assignment PIN_C16 -to hex0[3]
-set_location_assignment PIN_C15 -to hex0[2]
-set_location_assignment PIN_E15 -to hex0[1]
-set_location_assignment PIN_C14 -to hex0[0]
+set_location_assignment PIN_A19 -to hex2[7]
+set_location_assignment PIN_B22 -to hex2[6]
+set_location_assignment PIN_C22 -to hex2[5]
+set_location_assignment PIN_B21 -to hex2[4]
+set_location_assignment PIN_A21 -to hex2[3]
+set_location_assignment PIN_B19 -to hex2[2]
+set_location_assignment PIN_A20 -to hex2[1]
+set_location_assignment PIN_B20 -to hex2[0]
 set_location_assignment PIN_A16 -to hex1[7]
 set_location_assignment PIN_B17 -to hex1[6]
 set_location_assignment PIN_A18 -to hex1[5]
@@ -119,7 +120,14 @@ set_location_assignment PIN_B16 -to hex1[3]
 set_location_assignment PIN_E18 -to hex1[2]
 set_location_assignment PIN_D18 -to hex1[1]
 set_location_assignment PIN_C18 -to hex1[0]
-set_location_assignment PIN_V5 -to pwm_out
+set_location_assignment PIN_D15 -to hex0[7]
+set_location_assignment PIN_C17 -to hex0[6]
+set_location_assignment PIN_D17 -to hex0[5]
+set_location_assignment PIN_E16 -to hex0[4]
+set_location_assignment PIN_C16 -to hex0[3]
+set_location_assignment PIN_C15 -to hex0[2]
+set_location_assignment PIN_E15 -to hex0[1]
+set_location_assignment PIN_C14 -to hex0[0]
 
 set_location_assignment PIN_F15 -to sw[9]
 set_location_assignment PIN_B14 -to sw[8]
@@ -131,31 +139,26 @@ set_location_assignment PIN_C12 -to sw[3]
 set_location_assignment PIN_D12 -to sw[2]
 set_location_assignment PIN_C11 -to sw[1]
 set_location_assignment PIN_C10 -to sw[0]
-set_location_assignment PIN_H14 -to leds[9]
-set_location_assignment PIN_AB17 -to ext_clk_sel
-set_location_assignment PIN_AB20 -to ext_clk
-set_location_assignment PIN_B8 -to btn_clk
-set_location_assignment PIN_P11 -to max10_clk
 
-set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/modules/ledctrl.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/modules/target1v.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/modules/clockdivparm.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/modules/fastclkmux.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/units/ledunit.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/units/clockunit.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/units/control.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/units/dspmod.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/units/stage4.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/units/stage3.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/units/stage2.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/units/stage1.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/units/ddiff3.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/modules/quantize16.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/modules/pwm.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/modules/ledselect.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/modules/delay3clk.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/modules/ddiff.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/modules/clocksel.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/modules/add4wsign.sv
-set_global_assignment -name SYSTEMVERILOG_FILE ../../anspwm/src/anspwm.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/modules/ledctrl.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/modules/target1v.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/modules/clockdivparm.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/modules/fastclkmux.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/units/ledunit.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/units/clockunit.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/units/control.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/units/dspmod.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/units/stage4.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/units/stage3.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/units/stage2.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/units/stage1.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/units/ddiff3.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/modules/quantize16.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/modules/pwm.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/modules/ledselect.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/modules/delay3clk.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/modules/ddiff.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/modules/clocksel.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/modules/add4wsign.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/anspwm.sv
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
