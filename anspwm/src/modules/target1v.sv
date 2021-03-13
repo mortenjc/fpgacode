@@ -2,7 +2,7 @@
 //===----------------------------------------------------------------------===//
 ///
 /// \file
-/// \brief generate target of 1v +- n * 10uV
+/// \brief generate target of 1v +- n * 1uV 
 //===----------------------------------------------------------------------===//
 
 module target1v(
@@ -11,7 +11,8 @@ module target1v(
   );
   
   always_comb begin
-    target = 429359290 + value * 4295;
+    //target = 429359290 + value * 4295; // gives 10uV resolution
+	 target = 429359290 + value * 430;  // gives 1uV resolution
   end
   
 endmodule
