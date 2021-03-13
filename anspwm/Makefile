@@ -31,6 +31,9 @@ $(foreach unit, $(UNITS), $(eval $(call make_bintargets,$(unit))))
 $(foreach module, $(MODULES), $(eval $(call make_mktargets,$(module),modules)))
 $(foreach unit, $(UNITS), $(eval $(call make_mktargets,$(unit),units,$(UNITS.$(unit)))))
 
+fpga:
+	./scripts/cmds
+
 
 include makefiles/Makefile.test
 
@@ -43,8 +46,12 @@ build:
 	@mkdir -p build bin logs
 
 # Misc clean targets
-clean:
-	@rm -fr build bin logs *.bak
+clean: quartusclean
+	@rm -fr build bin logs
 
-realclean: clean
-	@rm -fr googletest db output_files simulation
+quartusclean:
+	@rm -fr db output_files simulation incremental_db *.bak
+
+
+realclean: clean 
+	@rm -fr googletest

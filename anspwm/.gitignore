@@ -1,2 +1,8 @@
 build/
 bin/
+logs/
+
+db/
+output_files/
+incremental_db/
+simulation/
