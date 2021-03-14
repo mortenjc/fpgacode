@@ -12,6 +12,8 @@ cpu for playing Zork. Unfortunately the project didn't finish so this is
 incomplete. However I learned about writing C++ unit tests for functional
 verification.
 
+## anspwm
+Code for doing pulse width modulation for a specific application.
+
 ## quartus
-Using Intel's Quartus Prime lite IDE for writing systemverilog for the DE10-lite
-FPGA demo board from terasic.
+Intel Quartus Prime project files (becoming obsolete)
