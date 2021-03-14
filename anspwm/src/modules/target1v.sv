@@ -2,17 +2,20 @@
 //===----------------------------------------------------------------------===//
 ///
 /// \file
-/// \brief generate target of 1v +- n * 1uV 
+/// \brief generate target of 1v +- n * 1uV
 //===----------------------------------------------------------------------===//
 
-module target1v(
+module target1v#(
+  parameter RESOLUTION=RES_1_UV)(
   input bit [5:0] value,
   output bit [31:0] target
   );
-  
+
+  parameter RES_10_UV = 4295; // gives 10uV steps
+  parameter RES_1_UV = 430;   // gives 1uV steps
+
   always_comb begin
-    //target = 429359290 + value * 4295; // gives 10uV resolution
-	 target = 429482970 + value * 430;  // gives 1uV resolution
+    target = 429496730 + ({26'b0,value} - 32) * RESOLUTION;
   end
-  
+
 endmodule

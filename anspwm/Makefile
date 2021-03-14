@@ -40,9 +40,9 @@ include makefiles/Makefile.test
 # make sure build directory is created
 .PHONY: directories
 #
-directories: build bin
+directories: build_bin_logs
 
-build:
+build_bin_logs:
 	@mkdir -p build bin logs
 
 # Misc clean targets
@@ -53,5 +53,5 @@ quartusclean:
 	@rm -fr db output_files simulation incremental_db *.bak
 
 
-realclean: clean 
+realclean: clean
 	@rm -fr googletest
