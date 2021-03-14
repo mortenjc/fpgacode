@@ -12,7 +12,7 @@ module target1v(
   
   always_comb begin
     //target = 429359290 + value * 4295; // gives 10uV resolution
-	 target = 429359290 + value * 430;  // gives 1uV resolution
+	 target = 429482970 + value * 430;  // gives 1uV resolution
   end
   
 endmodule
